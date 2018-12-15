@@ -14,6 +14,11 @@ export default {
     HelloWorld
   }
 }
+
+const node = new window.Ipfs()
+node.on('ready', () => {
+  console.log("IPFS Ready!", node);
+})
 </script>
 
 <style>
