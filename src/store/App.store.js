@@ -1,8 +1,12 @@
 export default {
   state: {
+    games: [],
     privateKey: ''
   },
   mutations: {
+    addGame(state, game) {
+      state.games.push(game)
+    },
     setPrivateKey(state, key) {
       state.privateKey = key
     }

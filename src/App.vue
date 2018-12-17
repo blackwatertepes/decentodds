@@ -1,19 +1,19 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
     <h2>Private Key: {{ privateKey }}</h2>
     <h2>Public Key: {{ publicKey }}</h2>
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img alt="Vue logo" src="./assets/logo.png">
+    <Games />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Games from './components/Games.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    Games
   },
   computed: {
     privateKey() { return this.$store.state.privateKey },
@@ -30,7 +30,6 @@ ipfs.on('ready', async () => {
   console.log("IPFS Ready!");
 
   // Load/Create a private public key pair...
-  const { localStorage } = window;
   let ecc = eosjs_ecc
   const privateKey = await ecc.randomKey()
   console.log("privateKey:", privateKey)
