@@ -14,9 +14,7 @@
 export default {
   name: 'HelloWorld',
   props: {
-    msg: String,
-    privateKey: String,
-    publicKey: String
+    msg: String
   }
 }
 </script>

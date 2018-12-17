@@ -1,6 +1,8 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
+    <h2>Private Key: {{ privateKey }}</h2>
+    <h2>Public Key: {{ publicKey }}</h2>
     <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
@@ -12,6 +14,13 @@ export default {
   name: 'app',
   components: {
     HelloWorld
+  },
+  computed: {
+    privateKey() { return this.$store.state.privateKey },
+    publicKey() { return this.$store.getters.publicKey }
+  },
+  mounted: function() {
+    this.$store.dispatch('createPrivateKey')
   }
 }
 
