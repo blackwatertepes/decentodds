@@ -20,7 +20,6 @@ public:
     [[eosio::action]] void status(uint64_t pollName);
     [[eosio::action]] void statusreset(uint64_t pollName);
     [[eosio::action]] void addpollopt(uint64_t pollName, std::string option);
-    [[eosio::action]] void rmpollopt(uint64_t pollName, std::string option);
     [[eosio::action]] void vote(uint64_t pollName, std::string option, uint64_t accountName);
 
     //private: -- not private so the cleos get table call can see the table data.
@@ -30,8 +29,7 @@ public:
     {
         uint64_t     ipfsHash;
         uint8_t      round =0;
-        std::string  option;
-        uint32_t     count =0;
+        uint64_t     createdAt;
 
         uint64_t primary_key() const { return ipfsHash; }
         uint64_t by_round() const {return round; }

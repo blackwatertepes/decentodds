@@ -18,8 +18,7 @@ void games::addpoll(name s, uint64_t pollName) {
     _games.emplace(get_self(), [&](auto& p) {
         p.ipfsHash = pollName;
         p.round = 0;
-        p.option = "";
-        p.count = 0;
+        p.createdAt = 0;
     });
 }
 
@@ -124,8 +123,7 @@ void games::addpollopt(uint64_t pollName, std::string option) {
                 _games.emplace(get_self(), [&](auto& p) {
                     p.ipfsHash = item.ipfsHash;
                     p.round = 0;
-                    p.option = option;
-                    p.count = 0;});
+                    p.createdAt = 0;});
             }
             else {
                 //eosio::print("Can not add poll option ", pollName, "option ", option, " Poll has started or is finished.");
@@ -135,30 +133,6 @@ void games::addpollopt(uint64_t pollName, std::string option) {
         }
     }
 }
-
-void games::rmpollopt(uint64_t pollName, std::string option)
-{
-    //eosio::print("Remove poll option ", pollName, "option ", option);
-
-    std::vector<uint64_t> keysForDeletion;
-    // find and remove the named poll
-    for(auto& item : _games) {
-        if (item.ipfsHash == pollName) {
-            keysForDeletion.push_back(item.ipfsHash);
-        }
-    }
-
-    for (uint64_t key : keysForDeletion) {
-        //eosio::print("remove from _polls ", key);
-        auto itr = _games.find(key);
-        if (itr != _games.end()) {
-            if (itr->option == option) {
-                _games.erase(itr);
-            }
-        }
-    }
-}
-
 
 void games::vote(uint64_t pollName, std::string option, uint64_t accountName)
 {
@@ -186,9 +160,9 @@ void games::vote(uint64_t pollName, std::string option, uint64_t accountName)
 
     // find the poll and the option and increment the count
     for(auto& item : _games) {
-        if (item.ipfsHash == pollName && item.option == option) {
+        if (item.ipfsHash == pollName) {
             _games.modify(item, get_self(), [&](auto& p) {
-                p.count = p.count + 1;
+                p.round = p.round + 1;
             });
         }
     }
@@ -201,4 +175,4 @@ void games::vote(uint64_t pollName, std::string option, uint64_t accountName)
 }
 
 
-EOSIO_DISPATCH( games, (version)(addpoll)(rmpoll)(status)(statusreset)(addpollopt)(rmpollopt)(vote))
+EOSIO_DISPATCH( games, (version)(addpoll)(rmpoll)(status)(statusreset)(addpollopt)(vote))

@@ -1,5 +1,5 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Sun Dec 30 22:36:43 2018",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Sun Dec 30 22:42:11 2018",
     "version": "eosio::abi/1.1",
     "structs": [
         {
@@ -43,12 +43,8 @@
                     "type": "uint8"
                 },
                 {
-                    "name": "option",
-                    "type": "string"
-                },
-                {
-                    "name": "count",
-                    "type": "uint32"
+                    "name": "createdAt",
+                    "type": "uint64"
                 }
             ]
         },
@@ -77,20 +73,6 @@
                 {
                     "name": "pollName",
                     "type": "uint64"
-                }
-            ]
-        },
-        {
-            "name": "rmpollopt",
-            "base": "",
-            "fields": [
-                {
-                    "name": "pollName",
-                    "type": "uint64"
-                },
-                {
-                    "name": "option",
-                    "type": "string"
                 }
             ]
         },
@@ -153,11 +135,6 @@
         {
             "name": "rmpoll",
             "type": "rmpoll",
-            "ricardian_contract": ""
-        },
-        {
-            "name": "rmpollopt",
-            "type": "rmpollopt",
             "ricardian_contract": ""
         },
         {
