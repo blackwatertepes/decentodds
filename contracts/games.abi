@@ -1,7 +1,25 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Sun Dec 30 23:05:54 2018",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Sun Dec 30 23:21:46 2018",
     "version": "eosio::abi/1.1",
     "structs": [
+        {
+            "name": "bet",
+            "base": "",
+            "fields": [
+                {
+                    "name": "gameId",
+                    "type": "uint64"
+                },
+                {
+                    "name": "accountName",
+                    "type": "uint64"
+                },
+                {
+                    "name": "balance",
+                    "type": "asset"
+                }
+            ]
+        },
         {
             "name": "creategame",
             "base": "",
@@ -45,6 +63,10 @@
                 {
                     "name": "gameId",
                     "type": "uint64"
+                },
+                {
+                    "name": "balance",
+                    "type": "asset"
                 }
             ]
         },
@@ -84,6 +106,11 @@
     ],
     "types": [],
     "actions": [
+        {
+            "name": "bet",
+            "type": "bet",
+            "ricardian_contract": ""
+        },
         {
             "name": "creategame",
             "type": "creategame",

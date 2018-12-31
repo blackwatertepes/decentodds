@@ -1,5 +1,6 @@
 #pragma once
 
+#include <eosiolib/asset.hpp>
 #include <eosiolib/eosio.hpp>
 
 using namespace eosio;
@@ -18,6 +19,7 @@ public:
     [[eosio::action]] void creategame(uint64_t ipfsHash, uint64_t accountName);
     [[eosio::action]] void joingame(uint64_t gameId, uint64_t accountName);
     [[eosio::action]] void leavegame(uint64_t gameId, uint64_t accountName);
+    [[eosio::action]] void bet(uint64_t gameId, uint64_t accountName, asset balance);
 
     //private: -- not private so the cleos get table call can see the table data.
 
@@ -37,6 +39,7 @@ public:
     {
         uint64_t      name;
         uint64_t      gameId;
+        asset         balance;
 
         uint64_t primary_key() const { return name; }
         uint64_t by_gameId() const {return gameId; }

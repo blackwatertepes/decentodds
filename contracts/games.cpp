@@ -35,15 +35,6 @@ void games::joingame(uint64_t gameId, uint64_t accountName)
         }
     }
 
-    /* TODO: Use this when betting...
-    for(auto& item : _games) {
-        if (item.ipfsHash == pollName) {
-            _games.modify(item, get_self(), [&](auto& p) {
-                p.round = p.round + 1;
-            });
-        }
-    }*/
-
     _players.emplace(get_self(), [&](auto& pv){
         pv.gameId = gameId;
         pv.name = accountName;
@@ -84,4 +75,19 @@ void games::leavegame(uint64_t gameId, uint64_t accountName) {
     }
 }
 
-EOSIO_DISPATCH( games, (version)(creategame)(joingame)(leavegame))
+void games::bet(uint64_t gameId, uint64_t accountName, asset balance) {
+    //require_auth(s);
+
+    // TODO: Increment the round, after all bets are finalized, not when bets are made
+    /*
+    for(auto& item : _games) {
+        if (item.ipfsHash == pollName) {
+            _games.modify(item, get_self(), [&](auto& p) {
+                p.round = p.round + 1;
+            });
+        }
+    }
+    */
+}
+
+EOSIO_DISPATCH( games, (version)(creategame)(joingame)(leavegame)(bet))
