@@ -10,7 +10,7 @@ public:
 
     //using contract::contract;
 
-    games( name receiver, name code, datastream<const char*> ds ): contract(receiver, code, ds),  _polls(receiver, code.value), _players(receiver, code.value)
+    games( name receiver, name code, datastream<const char*> ds ): contract(receiver, code, ds),  _games(receiver, code.value), _players(receiver, code.value)
     {}
 
     // [[eosio::action]] will tell eosio-cpp that the function is to be exposed as an action for user of the smart contract.
@@ -26,19 +26,18 @@ public:
     //private: -- not private so the cleos get table call can see the table data.
 
     // create the multi index tables to store the data
-    struct [[eosio::table]] poll
+    struct [[eosio::table]] game
     {
-        uint64_t      key; // primary key
-        uint64_t      pollId; // second key, non-unique, this table will have dup rows for each poll because of option
-        uint64_t   pollName; // name of poll
-        uint8_t      pollStatus =0; // staus where 0 = closed, 1 = open, 2 = finished
-        std::string  option; // the item you can vote for
-        uint32_t    count =0; // the number of votes for each itme -- this to be pulled out to separte table.
+        uint64_t     key;
+        uint64_t     ipfsHash;
+        uint8_t      round =0;
+        std::string  option;
+        uint32_t     count =0;
 
         uint64_t primary_key() const { return key; }
-        uint64_t by_pollId() const {return pollId; }
+        uint64_t by_ipfsHash() const {return ipfsHash; }
     };
-    typedef multi_index<"poll"_n, poll, indexed_by<"pollid"_n, const_mem_fun<poll, uint64_t, &poll::by_pollId>>> pollstable;
+    typedef multi_index<"game"_n, game, indexed_by<"ipfshash"_n, const_mem_fun<game, uint64_t, &game::by_ipfsHash>>> gamestable;
 
     struct [[eosio::table]] gameplayers
     {
@@ -48,9 +47,9 @@ public:
         uint64_t primary_key() const { return name; }
         uint64_t by_gameId() const {return gameId; }
     };
-    typedef multi_index<"gameplayers"_n, gameplayers, indexed_by<"pollid"_n, const_mem_fun<gameplayers, uint64_t, &gameplayers::by_gameId>>> players;
+    typedef multi_index<"gameplayers"_n, gameplayers, indexed_by<"gameid"_n, const_mem_fun<gameplayers, uint64_t, &gameplayers::by_gameId>>> players;
 
     //// local instances of the multi indexes
-    pollstable _polls;
+    gamestable _games;
     players _players;
 };

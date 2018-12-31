@@ -15,11 +15,10 @@ void games::addpoll(name s, uint64_t pollName) {
     //eosio::print("Add poll ", pollName);
 
     // update the table to include a new poll
-    _polls.emplace(get_self(), [&](auto& p) {
-        p.key = _polls.available_primary_key();
-        p.pollId = _polls.available_primary_key();
-        p.pollName = pollName;
-        p.pollStatus = 0;
+    _games.emplace(get_self(), [&](auto& p) {
+        p.key = _games.available_primary_key();
+        p.ipfsHash = pollName;
+        p.round = 0;
         p.option = "";
         p.count = 0;
     });
@@ -32,8 +31,8 @@ void games::rmpoll(name s, uint64_t pollName) {
 
     std::vector<uint64_t> keysForDeletion;
     // find items which are for the named poll
-    for(auto& item : _polls) {
-        if (item.pollName == pollName) {
+    for(auto& item : _games) {
+        if (item.ipfsHash == pollName) {
             keysForDeletion.push_back(item.key);
         }
     }
@@ -41,9 +40,9 @@ void games::rmpoll(name s, uint64_t pollName) {
     // now delete each item for that poll
     for (uint64_t key : keysForDeletion) {
         //eosio::print("remove from _polls ", key);
-        auto itr = _polls.find(key);
-        if (itr != _polls.end()) {
-            _polls.erase(itr);
+        auto itr = _games.find(key);
+        if (itr != _games.end()) {
+            _games.erase(itr);
         }
     }
 
@@ -73,8 +72,8 @@ void games::status(uint64_t pollName) {
 
     std::vector<uint64_t> keysForModify;
     // find items which are for the named poll
-    for(auto& item : _polls) {
-        if (item.pollName == pollName) {
+    for(auto& item : _games) {
+        if (item.ipfsHash == pollName) {
             keysForModify.push_back(item.key);
         }
     }
@@ -82,10 +81,10 @@ void games::status(uint64_t pollName) {
     // now get each item and modify the status
     for (uint64_t key : keysForModify) {
         //eosio::print("modify _polls status", key);
-        auto itr = _polls.find(key);
-        if (itr != _polls.end()) {
-            _polls.modify(itr, get_self(), [&](auto& p) {
-                p.pollStatus = p.pollStatus + 1;
+        auto itr = _games.find(key);
+        if (itr != _games.end()) {
+            _games.modify(itr, get_self(), [&](auto& p) {
+                p.round = p.round + 1;
             });
         }
     }
@@ -96,8 +95,8 @@ void games::statusreset(uint64_t pollName) {
 
     std::vector<uint64_t> keysForModify;
     // find all poll items
-    for(auto& item : _polls) {
-        if (item.pollName == pollName) {
+    for(auto& item : _games) {
+        if (item.ipfsHash == pollName) {
             keysForModify.push_back(item.key);
         }
     }
@@ -105,10 +104,10 @@ void games::statusreset(uint64_t pollName) {
     // update the status in each poll item
     for (uint64_t key : keysForModify) {
         //eosio::print("modify _polls status", key);
-        auto itr = _polls.find(key);
-        if (itr != _polls.end()) {
-            _polls.modify(itr, get_self(), [&](auto& p) {
-                p.pollStatus = 0;
+        auto itr = _games.find(key);
+        if (itr != _games.end()) {
+            _games.modify(itr, get_self(), [&](auto& p) {
+                p.round = 0;
             });
         }
     }
@@ -119,15 +118,14 @@ void games::addpollopt(uint64_t pollName, std::string option) {
     //eosio::print("Add poll option ", pollName, "option ", option);
 
     // find the pollId, from _polls, use this to update the _polls with a new option
-    for(auto& item : _polls) {
-        if (item.pollName == pollName) {
+    for(auto& item : _games) {
+        if (item.ipfsHash == pollName) {
             // can only add if the poll is not started or finished
-            if(item.pollStatus == 0) {
-                _polls.emplace(get_self(), [&](auto& p) {
-                    p.key = _polls.available_primary_key();
-                    p.pollId = item.pollId;
-                    p.pollName = item.pollName;
-                    p.pollStatus = 0;
+            if(item.round == 0) {
+                _games.emplace(get_self(), [&](auto& p) {
+                    p.key = _games.available_primary_key();
+                    p.ipfsHash = item.ipfsHash;
+                    p.round = 0;
                     p.option = option;
                     p.count = 0;});
             }
@@ -146,18 +144,18 @@ void games::rmpollopt(uint64_t pollName, std::string option)
 
     std::vector<uint64_t> keysForDeletion;
     // find and remove the named poll
-    for(auto& item : _polls) {
-        if (item.pollName == pollName) {
+    for(auto& item : _games) {
+        if (item.ipfsHash == pollName) {
             keysForDeletion.push_back(item.key);
         }
     }
 
     for (uint64_t key : keysForDeletion) {
         //eosio::print("remove from _polls ", key);
-        auto itr = _polls.find(key);
-        if (itr != _polls.end()) {
+        auto itr = _games.find(key);
+        if (itr != _games.end()) {
             if (itr->option == option) {
-                _polls.erase(itr);
+                _games.erase(itr);
             }
         }
     }
@@ -169,9 +167,9 @@ void games::vote(uint64_t pollName, std::string option, uint64_t accountName)
     //eosio::print("vote for ", option, " in poll ", pollName, " by ", accountName);
 
     // is the poll open
-    for(auto& item : _polls) {
-        if (item.pollName == pollName) {
-            if (item.pollStatus != 1) {
+    for(auto& item : _games) {
+        if (item.ipfsHash == pollName) {
+            if (item.round != 1) {
                 //eosio::print("Poll ",pollName,  " is not open");
                 return;
             }
@@ -188,13 +186,10 @@ void games::vote(uint64_t pollName, std::string option, uint64_t accountName)
         }
     }
 
-    uint64_t pollId =99999; // get the pollId for the _players table
-
     // find the poll and the option and increment the count
-    for(auto& item : _polls) {
-        if (item.pollName == pollName && item.option == option) {
-            pollId = item.pollId; // for recording vote in this poll
-            _polls.modify(item, get_self(), [&](auto& p) {
+    for(auto& item : _games) {
+        if (item.ipfsHash == pollName && item.option == option) {
+            _games.modify(item, get_self(), [&](auto& p) {
                 p.count = p.count + 1;
             });
         }
@@ -202,7 +197,7 @@ void games::vote(uint64_t pollName, std::string option, uint64_t accountName)
 
     // record that accountName has voted
     _players.emplace(get_self(), [&](auto& pv){
-        pv.gameId = pollId;
+        pv.gameId = pollName;
         pv.name = accountName;
     });
 }

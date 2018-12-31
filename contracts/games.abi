@@ -1,5 +1,5 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Sun Dec 30 22:19:00 2018",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Sun Dec 30 22:34:04 2018",
     "version": "eosio::abi/1.1",
     "structs": [
         {
@@ -31,6 +31,32 @@
             ]
         },
         {
+            "name": "game",
+            "base": "",
+            "fields": [
+                {
+                    "name": "key",
+                    "type": "uint64"
+                },
+                {
+                    "name": "ipfsHash",
+                    "type": "uint64"
+                },
+                {
+                    "name": "round",
+                    "type": "uint8"
+                },
+                {
+                    "name": "option",
+                    "type": "string"
+                },
+                {
+                    "name": "count",
+                    "type": "uint32"
+                }
+            ]
+        },
+        {
             "name": "gameplayers",
             "base": "",
             "fields": [
@@ -41,36 +67,6 @@
                 {
                     "name": "gameId",
                     "type": "uint64"
-                }
-            ]
-        },
-        {
-            "name": "poll",
-            "base": "",
-            "fields": [
-                {
-                    "name": "key",
-                    "type": "uint64"
-                },
-                {
-                    "name": "pollId",
-                    "type": "uint64"
-                },
-                {
-                    "name": "pollName",
-                    "type": "uint64"
-                },
-                {
-                    "name": "pollStatus",
-                    "type": "uint8"
-                },
-                {
-                    "name": "option",
-                    "type": "string"
-                },
-                {
-                    "name": "count",
-                    "type": "uint32"
                 }
             ]
         },
@@ -191,15 +187,15 @@
     ],
     "tables": [
         {
-            "name": "gameplayers",
-            "type": "gameplayers",
+            "name": "game",
+            "type": "game",
             "index_type": "i64",
             "key_names": [],
             "key_types": []
         },
         {
-            "name": "poll",
-            "type": "poll",
+            "name": "gameplayers",
+            "type": "gameplayers",
             "index_type": "i64",
             "key_names": [],
             "key_types": []
