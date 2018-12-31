@@ -16,7 +16,6 @@ void games::addpoll(name s, uint64_t pollName) {
 
     // update the table to include a new poll
     _games.emplace(get_self(), [&](auto& p) {
-        p.key = _games.available_primary_key();
         p.ipfsHash = pollName;
         p.round = 0;
         p.option = "";
@@ -33,7 +32,7 @@ void games::rmpoll(name s, uint64_t pollName) {
     // find items which are for the named poll
     for(auto& item : _games) {
         if (item.ipfsHash == pollName) {
-            keysForDeletion.push_back(item.key);
+            keysForDeletion.push_back(item.ipfsHash);
         }
     }
 
@@ -74,7 +73,7 @@ void games::status(uint64_t pollName) {
     // find items which are for the named poll
     for(auto& item : _games) {
         if (item.ipfsHash == pollName) {
-            keysForModify.push_back(item.key);
+            keysForModify.push_back(item.ipfsHash);
         }
     }
 
@@ -97,7 +96,7 @@ void games::statusreset(uint64_t pollName) {
     // find all poll items
     for(auto& item : _games) {
         if (item.ipfsHash == pollName) {
-            keysForModify.push_back(item.key);
+            keysForModify.push_back(item.ipfsHash);
         }
     }
 
@@ -123,7 +122,6 @@ void games::addpollopt(uint64_t pollName, std::string option) {
             // can only add if the poll is not started or finished
             if(item.round == 0) {
                 _games.emplace(get_self(), [&](auto& p) {
-                    p.key = _games.available_primary_key();
                     p.ipfsHash = item.ipfsHash;
                     p.round = 0;
                     p.option = option;
@@ -146,7 +144,7 @@ void games::rmpollopt(uint64_t pollName, std::string option)
     // find and remove the named poll
     for(auto& item : _games) {
         if (item.ipfsHash == pollName) {
-            keysForDeletion.push_back(item.key);
+            keysForDeletion.push_back(item.ipfsHash);
         }
     }
 

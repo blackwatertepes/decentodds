@@ -28,16 +28,15 @@ public:
     // create the multi index tables to store the data
     struct [[eosio::table]] game
     {
-        uint64_t     key;
         uint64_t     ipfsHash;
         uint8_t      round =0;
         std::string  option;
         uint32_t     count =0;
 
-        uint64_t primary_key() const { return key; }
-        uint64_t by_ipfsHash() const {return ipfsHash; }
+        uint64_t primary_key() const { return ipfsHash; }
+        uint64_t by_round() const {return round; }
     };
-    typedef multi_index<"game"_n, game, indexed_by<"ipfshash"_n, const_mem_fun<game, uint64_t, &game::by_ipfsHash>>> gamestable;
+    typedef multi_index<"game"_n, game, indexed_by<"ipfshash"_n, const_mem_fun<game, uint64_t, &game::by_round>>> gamestable;
 
     struct [[eosio::table]] gameplayers
     {

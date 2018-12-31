@@ -1,5 +1,5 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Sun Dec 30 22:34:04 2018",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Sun Dec 30 22:36:43 2018",
     "version": "eosio::abi/1.1",
     "structs": [
         {
@@ -34,10 +34,6 @@
             "name": "game",
             "base": "",
             "fields": [
-                {
-                    "name": "key",
-                    "type": "uint64"
-                },
                 {
                     "name": "ipfsHash",
                     "type": "uint64"
