@@ -1,0 +1,14 @@
+{
+  "name": "games",
+  "version": "0.0.0",
+  "main": "./games.js",
+  "scripts": {},
+  "repository": {},
+  "author": "Blackwater",
+  "devDependencies": {},
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "eosjs": "v20.0.0-beta1",
+    "node-fetch": "latest"
+  }
+}

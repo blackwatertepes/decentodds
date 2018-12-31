@@ -21,14 +21,32 @@ export default {
   },
   mounted: function() {
     this.$store.dispatch('createPrivateKey')
+    const ipfs = new window.Ipfs()
+    ipfs.on('ready', async () => {
+      this.$store.commit('setIpfs', ipfs)
+      this.$store.dispatch('loadGames')
+    })
   }
 }
 
 // IPFS...
-const ipfs = new window.Ipfs()
+const ipfs = new window.Ipfs({
+  //repo: 'com/wargoats/' + Math.random(),
+  EXPERIMENTAL: {
+    pubsub: true
+  },
+  config: {
+    Addresses: {
+      Swarm: [
+        '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star'
+      ]
+    }
+  }
+})
 ipfs.on('ready', async () => {
   console.log("IPFS Ready!");
 
+  /*
   // Load/Create a private public key pair...
   let ecc = eosjs_ecc
   const privateKey = await ecc.randomKey()
@@ -60,6 +78,7 @@ ipfs.on('ready', async () => {
       //console.log(file.content.toString('utf8'))
     })
   })
+  */
 })
 
 </script>

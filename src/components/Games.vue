@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     addGame() {
-      this.$store.commit('addGame', {})
+      this.$store.dispatch('addGame', {})
     }
   }
 }
