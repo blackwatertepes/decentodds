@@ -1,0 +1,257 @@
+{
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Mon Dec 31 12:16:48 2018",
+    "version": "eosio::abi/1.1",
+    "structs": [
+        {
+            "name": "acceptbet",
+            "base": "",
+            "fields": [
+                {
+                    "name": "s",
+                    "type": "name"
+                },
+                {
+                    "name": "gameId",
+                    "type": "uint64"
+                },
+                {
+                    "name": "accountNameBetter",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "bet",
+            "base": "",
+            "fields": [
+                {
+                    "name": "s",
+                    "type": "name"
+                },
+                {
+                    "name": "gameId",
+                    "type": "uint64"
+                },
+                {
+                    "name": "accountName",
+                    "type": "uint64"
+                },
+                {
+                    "name": "wager",
+                    "type": "asset"
+                },
+                {
+                    "name": "deposit",
+                    "type": "asset"
+                }
+            ]
+        },
+        {
+            "name": "bets",
+            "base": "",
+            "fields": [
+                {
+                    "name": "accountName",
+                    "type": "uint64"
+                },
+                {
+                    "name": "gameId",
+                    "type": "uint64"
+                },
+                {
+                    "name": "wager",
+                    "type": "asset"
+                },
+                {
+                    "name": "deposit",
+                    "type": "asset"
+                },
+                {
+                    "name": "requestedPayout",
+                    "type": "asset"
+                },
+                {
+                    "name": "accepted",
+                    "type": "bool"
+                },
+                {
+                    "name": "createdAt",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "blowupgame",
+            "base": "",
+            "fields": [
+                {
+                    "name": "s",
+                    "type": "name"
+                },
+                {
+                    "name": "gameId",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "creategame",
+            "base": "",
+            "fields": [
+                {
+                    "name": "s",
+                    "type": "name"
+                },
+                {
+                    "name": "ipfsHash",
+                    "type": "uint64"
+                },
+                {
+                    "name": "accountName",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "deletegame",
+            "base": "",
+            "fields": [
+                {
+                    "name": "s",
+                    "type": "name"
+                },
+                {
+                    "name": "ipfsHash",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "games",
+            "base": "",
+            "fields": [
+                {
+                    "name": "ipfsHash",
+                    "type": "uint64"
+                },
+                {
+                    "name": "round",
+                    "type": "uint64"
+                },
+                {
+                    "name": "createdAt",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "players",
+            "base": "",
+            "fields": [
+                {
+                    "name": "accountName",
+                    "type": "uint64"
+                },
+                {
+                    "name": "roundsPlayed",
+                    "type": "uint64"
+                },
+                {
+                    "name": "totalBetsPlaced",
+                    "type": "uint64"
+                },
+                {
+                    "name": "createdAt",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "requestpayout",
+            "base": "",
+            "fields": [
+                {
+                    "name": "s",
+                    "type": "name"
+                },
+                {
+                    "name": "gameId",
+                    "type": "uint64"
+                },
+                {
+                    "name": "payout",
+                    "type": "asset"
+                }
+            ]
+        },
+        {
+            "name": "version",
+            "base": "",
+            "fields": []
+        }
+    ],
+    "types": [],
+    "actions": [
+        {
+            "name": "acceptbet",
+            "type": "acceptbet",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "bet",
+            "type": "bet",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "blowupgame",
+            "type": "blowupgame",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "creategame",
+            "type": "creategame",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "deletegame",
+            "type": "deletegame",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "requestpayout",
+            "type": "requestpayout",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "version",
+            "type": "version",
+            "ricardian_contract": ""
+        }
+    ],
+    "tables": [
+        {
+            "name": "bets",
+            "type": "bets",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        },
+        {
+            "name": "games",
+            "type": "games",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        },
+        {
+            "name": "players",
+            "type": "players",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        }
+    ],
+    "ricardian_clauses": [],
+    "variants": [],
+    "abi_extensions": []
+}
