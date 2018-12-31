@@ -1,32 +1,18 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Sun Dec 30 22:42:11 2018",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Sun Dec 30 23:05:54 2018",
     "version": "eosio::abi/1.1",
     "structs": [
         {
-            "name": "addpoll",
+            "name": "creategame",
             "base": "",
             "fields": [
                 {
-                    "name": "s",
-                    "type": "name"
-                },
-                {
-                    "name": "pollName",
-                    "type": "uint64"
-                }
-            ]
-        },
-        {
-            "name": "addpollopt",
-            "base": "",
-            "fields": [
-                {
-                    "name": "pollName",
+                    "name": "ipfsHash",
                     "type": "uint64"
                 },
                 {
-                    "name": "option",
-                    "type": "string"
+                    "name": "accountName",
+                    "type": "uint64"
                 }
             ]
         },
@@ -63,35 +49,29 @@
             ]
         },
         {
-            "name": "rmpoll",
+            "name": "joingame",
             "base": "",
             "fields": [
                 {
-                    "name": "s",
-                    "type": "name"
+                    "name": "gameId",
+                    "type": "uint64"
                 },
                 {
-                    "name": "pollName",
+                    "name": "accountName",
                     "type": "uint64"
                 }
             ]
         },
         {
-            "name": "status",
+            "name": "leavegame",
             "base": "",
             "fields": [
                 {
-                    "name": "pollName",
+                    "name": "gameId",
                     "type": "uint64"
-                }
-            ]
-        },
-        {
-            "name": "statusreset",
-            "base": "",
-            "fields": [
+                },
                 {
-                    "name": "pollName",
+                    "name": "accountName",
                     "type": "uint64"
                 }
             ]
@@ -100,61 +80,28 @@
             "name": "version",
             "base": "",
             "fields": []
-        },
-        {
-            "name": "vote",
-            "base": "",
-            "fields": [
-                {
-                    "name": "pollName",
-                    "type": "uint64"
-                },
-                {
-                    "name": "option",
-                    "type": "string"
-                },
-                {
-                    "name": "accountName",
-                    "type": "uint64"
-                }
-            ]
         }
     ],
     "types": [],
     "actions": [
         {
-            "name": "addpoll",
-            "type": "addpoll",
+            "name": "creategame",
+            "type": "creategame",
             "ricardian_contract": ""
         },
         {
-            "name": "addpollopt",
-            "type": "addpollopt",
+            "name": "joingame",
+            "type": "joingame",
             "ricardian_contract": ""
         },
         {
-            "name": "rmpoll",
-            "type": "rmpoll",
-            "ricardian_contract": ""
-        },
-        {
-            "name": "status",
-            "type": "status",
-            "ricardian_contract": ""
-        },
-        {
-            "name": "statusreset",
-            "type": "statusreset",
+            "name": "leavegame",
+            "type": "leavegame",
             "ricardian_contract": ""
         },
         {
             "name": "version",
             "type": "version",
-            "ricardian_contract": ""
-        },
-        {
-            "name": "vote",
-            "type": "vote",
             "ricardian_contract": ""
         }
     ],

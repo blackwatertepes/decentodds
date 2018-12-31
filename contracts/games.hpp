@@ -15,12 +15,9 @@ public:
 
     // [[eosio::action]] will tell eosio-cpp that the function is to be exposed as an action for user of the smart contract.
     [[eosio::action]] void version();
-    [[eosio::action]] void addpoll(name s, uint64_t pollName);
-    [[eosio::action]] void rmpoll(name s, uint64_t pollName);
-    [[eosio::action]] void status(uint64_t pollName);
-    [[eosio::action]] void statusreset(uint64_t pollName);
-    [[eosio::action]] void addpollopt(uint64_t pollName, std::string option);
-    [[eosio::action]] void vote(uint64_t pollName, std::string option, uint64_t accountName);
+    [[eosio::action]] void creategame(uint64_t ipfsHash, uint64_t accountName);
+    [[eosio::action]] void joingame(uint64_t gameId, uint64_t accountName);
+    [[eosio::action]] void leavegame(uint64_t gameId, uint64_t accountName);
 
     //private: -- not private so the cleos get table call can see the table data.
 
