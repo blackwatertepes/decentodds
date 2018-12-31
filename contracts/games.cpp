@@ -1,43 +1,211 @@
 #include "games.hpp"
 
-void games::creategame(uint64_t ipfs_hash, name account_name) {
-    require_auth(account_name);
+// note we are explcit in our use of eosio library functions
+// note we liberally use print to assist in debugging
 
-    _games.emplace(get_self(), [&](auto& game) {
-        game.ipfs_hash = ipfs_hash;
-        game.round = 0;
-        game.created_at = now();
-    });
+// public methods exposed via the ABI
 
-    _players.emplace(get_self(), [&](auto& player) {
-        player.account_name = account_name;
-        player.game_id = game_id;
-    });
-}
+void games::version() {
+    //eosio::print("YouVote version  0.22");
+};
 
-void games::entergame(uint64_t game_id, name account_name) {
-    require_auth(account_name);
+void games::addpoll(name s, uint64_t pollName) {
+    // require_auth(s);
 
-    auto iter = _games.find(game_id);
-    eosio_assert(iter != _games.end(), "Game not found!");
+    //eosio::print("Add poll ", pollName);
 
-    _players.emplace(get_self(), [&](auto& player) {
-        player.account_name = account_name;
-        player.game_id = game_id;
+    // update the table to include a new poll
+    _polls.emplace(get_self(), [&](auto& p) {
+        p.key = _polls.available_primary_key();
+        p.pollId = _polls.available_primary_key();
+        p.pollName = pollName;
+        p.pollStatus = 0;
+        p.option = "";
+        p.count = 0;
     });
 }
 
-void games::leavegame(uint64_t game_id, name account_name) {
-    require_auth(account_name);
+void games::rmpoll(name s, uint64_t pollName) {
+    //require_auth(s);
 
-    auto gameIter = _games.find(game_id);
-    eosio_assert(gameIter != _games.end(), "Game not found!");
+    //eosio::print("Remove poll ", pollName);
 
-    auto playerIter = _players.find(account_name);
-    eosio_assert(playerIter != _players.end(), "No player found!");
+    std::vector<uint64_t> keysForDeletion;
+    // find items which are for the named poll
+    for(auto& item : _polls) {
+        if (item.pollName == pollName) {
+            keysForDeletion.push_back(item.key);
+        }
+    }
 
-    _games.erase(gameIter);
-    _players.erase(playerIter);
+    // now delete each item for that poll
+    for (uint64_t key : keysForDeletion) {
+        //eosio::print("remove from _polls ", key);
+        auto itr = _polls.find(key);
+        if (itr != _polls.end()) {
+            _polls.erase(itr);
+        }
+    }
+
+
+    // add remove players ... don't need it the axtions are permanently stored on the block chain
+
+    std::vector<uint64_t> keysForDeletionFromVotes;
+    // find items which are for the named poll
+    for(auto& item : _players) {
+        if (item.name == pollName) {
+            keysForDeletionFromVotes.push_back(item.name);
+        }
+    }
+
+    // now delete each item for that poll
+    for (uint64_t key : keysForDeletionFromVotes) {
+        //eosio::print("remove from _players ", key);
+        auto itr = _players.find(key);
+        if (itr != _players.end()) {
+            _players.erase(itr);
+        }
+    }
 }
 
-EOSIO_DISPATCH(games, (creategame)(entergame)(leavegame))
+void games::status(uint64_t pollName) {
+    //eosio::print("Change poll status ", pollName);
+
+    std::vector<uint64_t> keysForModify;
+    // find items which are for the named poll
+    for(auto& item : _polls) {
+        if (item.pollName == pollName) {
+            keysForModify.push_back(item.key);
+        }
+    }
+
+    // now get each item and modify the status
+    for (uint64_t key : keysForModify) {
+        //eosio::print("modify _polls status", key);
+        auto itr = _polls.find(key);
+        if (itr != _polls.end()) {
+            _polls.modify(itr, get_self(), [&](auto& p) {
+                p.pollStatus = p.pollStatus + 1;
+            });
+        }
+    }
+}
+
+void games::statusreset(uint64_t pollName) {
+    //eosio::print("Reset poll status ", pollName);
+
+    std::vector<uint64_t> keysForModify;
+    // find all poll items
+    for(auto& item : _polls) {
+        if (item.pollName == pollName) {
+            keysForModify.push_back(item.key);
+        }
+    }
+
+    // update the status in each poll item
+    for (uint64_t key : keysForModify) {
+        //eosio::print("modify _polls status", key);
+        auto itr = _polls.find(key);
+        if (itr != _polls.end()) {
+            _polls.modify(itr, get_self(), [&](auto& p) {
+                p.pollStatus = 0;
+            });
+        }
+    }
+}
+
+
+void games::addpollopt(uint64_t pollName, std::string option) {
+    //eosio::print("Add poll option ", pollName, "option ", option);
+
+    // find the pollId, from _polls, use this to update the _polls with a new option
+    for(auto& item : _polls) {
+        if (item.pollName == pollName) {
+            // can only add if the poll is not started or finished
+            if(item.pollStatus == 0) {
+                _polls.emplace(get_self(), [&](auto& p) {
+                    p.key = _polls.available_primary_key();
+                    p.pollId = item.pollId;
+                    p.pollName = item.pollName;
+                    p.pollStatus = 0;
+                    p.option = option;
+                    p.count = 0;});
+            }
+            else {
+                //eosio::print("Can not add poll option ", pollName, "option ", option, " Poll has started or is finished.");
+            }
+
+            break; // so you only add it once
+        }
+    }
+}
+
+void games::rmpollopt(uint64_t pollName, std::string option)
+{
+    //eosio::print("Remove poll option ", pollName, "option ", option);
+
+    std::vector<uint64_t> keysForDeletion;
+    // find and remove the named poll
+    for(auto& item : _polls) {
+        if (item.pollName == pollName) {
+            keysForDeletion.push_back(item.key);
+        }
+    }
+
+    for (uint64_t key : keysForDeletion) {
+        //eosio::print("remove from _polls ", key);
+        auto itr = _polls.find(key);
+        if (itr != _polls.end()) {
+            if (itr->option == option) {
+                _polls.erase(itr);
+            }
+        }
+    }
+}
+
+
+void games::vote(uint64_t pollName, std::string option, uint64_t accountName)
+{
+    //eosio::print("vote for ", option, " in poll ", pollName, " by ", accountName);
+
+    // is the poll open
+    for(auto& item : _polls) {
+        if (item.pollName == pollName) {
+            if (item.pollStatus != 1) {
+                //eosio::print("Poll ",pollName,  " is not open");
+                return;
+            }
+            break; // only need to check status once
+        }
+    }
+
+    // has account name already voted?
+    for(auto& vote : _players) {
+        if (vote.name == pollName && vote.name == accountName) {
+            //eosio::print(accountName, " has already voted in poll ", pollName);
+            //eosio_assert(true, "Already Voted");
+            return;
+        }
+    }
+
+    uint64_t pollId =99999; // get the pollId for the _players table
+
+    // find the poll and the option and increment the count
+    for(auto& item : _polls) {
+        if (item.pollName == pollName && item.option == option) {
+            pollId = item.pollId; // for recording vote in this poll
+            _polls.modify(item, get_self(), [&](auto& p) {
+                p.count = p.count + 1;
+            });
+        }
+    }
+
+    // record that accountName has voted
+    _players.emplace(get_self(), [&](auto& pv){
+        pv.gameId = pollId;
+        pv.name = accountName;
+    });
+}
+
+
+EOSIO_DISPATCH( games, (version)(addpoll)(rmpoll)(status)(statusreset)(addpollopt)(rmpollopt)(vote))
