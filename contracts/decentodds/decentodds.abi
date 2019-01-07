@@ -1,5 +1,5 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Mon Dec 31 12:16:48 2018",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Sun Jan  6 19:19:24 2019",
     "version": "eosio::abi/1.1",
     "structs": [
         {
@@ -7,16 +7,22 @@
             "base": "",
             "fields": [
                 {
-                    "name": "s",
-                    "type": "name"
-                },
+                    "name": "hash",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "askpayout",
+            "base": "",
+            "fields": [
                 {
-                    "name": "gameId",
+                    "name": "hash",
                     "type": "uint64"
                 },
                 {
-                    "name": "accountNameBetter",
-                    "type": "uint64"
+                    "name": "payout",
+                    "type": "asset"
                 }
             ]
         },
@@ -25,16 +31,12 @@
             "base": "",
             "fields": [
                 {
-                    "name": "s",
+                    "name": "hash",
+                    "type": "uint64"
+                },
+                {
+                    "name": "better",
                     "type": "name"
-                },
-                {
-                    "name": "gameId",
-                    "type": "uint64"
-                },
-                {
-                    "name": "accountName",
-                    "type": "uint64"
                 },
                 {
                     "name": "wager",
@@ -51,11 +53,15 @@
             "base": "",
             "fields": [
                 {
-                    "name": "accountName",
+                    "name": "key",
                     "type": "uint64"
                 },
                 {
-                    "name": "gameId",
+                    "name": "better",
+                    "type": "name"
+                },
+                {
+                    "name": "hash",
                     "type": "uint64"
                 },
                 {
@@ -85,11 +91,7 @@
             "base": "",
             "fields": [
                 {
-                    "name": "s",
-                    "type": "name"
-                },
-                {
-                    "name": "gameId",
+                    "name": "hash",
                     "type": "uint64"
                 }
             ]
@@ -99,15 +101,11 @@
             "base": "",
             "fields": [
                 {
-                    "name": "s",
+                    "name": "creator",
                     "type": "name"
                 },
                 {
-                    "name": "ipfsHash",
-                    "type": "uint64"
-                },
-                {
-                    "name": "accountName",
+                    "name": "hash",
                     "type": "uint64"
                 }
             ]
@@ -117,11 +115,7 @@
             "base": "",
             "fields": [
                 {
-                    "name": "s",
-                    "type": "name"
-                },
-                {
-                    "name": "ipfsHash",
+                    "name": "hash",
                     "type": "uint64"
                 }
             ]
@@ -131,8 +125,12 @@
             "base": "",
             "fields": [
                 {
-                    "name": "ipfsHash",
+                    "name": "hash",
                     "type": "uint64"
+                },
+                {
+                    "name": "creator",
+                    "type": "name"
                 },
                 {
                     "name": "round",
@@ -149,8 +147,8 @@
             "base": "",
             "fields": [
                 {
-                    "name": "accountName",
-                    "type": "uint64"
+                    "name": "player",
+                    "type": "name"
                 },
                 {
                     "name": "roundsPlayed",
@@ -167,24 +165,6 @@
             ]
         },
         {
-            "name": "requestpayout",
-            "base": "",
-            "fields": [
-                {
-                    "name": "s",
-                    "type": "name"
-                },
-                {
-                    "name": "gameId",
-                    "type": "uint64"
-                },
-                {
-                    "name": "payout",
-                    "type": "asset"
-                }
-            ]
-        },
-        {
             "name": "version",
             "base": "",
             "fields": []
@@ -195,6 +175,11 @@
         {
             "name": "acceptbet",
             "type": "acceptbet",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "askpayout",
+            "type": "askpayout",
             "ricardian_contract": ""
         },
         {
@@ -215,11 +200,6 @@
         {
             "name": "deletegame",
             "type": "deletegame",
-            "ricardian_contract": ""
-        },
-        {
-            "name": "requestpayout",
-            "type": "requestpayout",
             "ricardian_contract": ""
         },
         {

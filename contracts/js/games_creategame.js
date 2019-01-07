@@ -7,12 +7,16 @@ const { ACTOR } = process.env;
   const result = await api.transact({
     actions: [{
       account: ACTOR,
-      name: 'newgame',
+      name: 'creategame',
       authorization: [{
         actor: ACTOR,
         permission: 'active',
       }],
-      data: {},
+      data: {
+        s: 'decentoddsaz',
+        ipfsHash: 'asdf',
+        accountName: 'decentoddsaz'
+      },
     }]
   }, {
     blocksBehind: 3,
