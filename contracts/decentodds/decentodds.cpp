@@ -32,6 +32,9 @@ void decentodds::bet(uint64_t hash, name better, asset wager, asset deposit) {
 
     // TODO: Transfer funds for wager & deposit
 
+    // TODO: Check if a bet already exists
+    // If yes, modify
+    // Otherwise, create new bet...
     _bets.emplace(get_self(), [&](auto& p) {
         p.key = _bets.available_primary_key();
         p.hash = hash;

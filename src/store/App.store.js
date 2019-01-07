@@ -1,5 +1,5 @@
 import Room from 'ipfs-pubsub-room'
-let Buffer = require('buffer/').Buffer
+const rpc = new eosjs_jsonrpc.default('https://kylin.eoscanada.com');
 
 export default {
   state: {
@@ -16,32 +16,28 @@ export default {
     }
   },
   actions: {
-    async addGame({ commit, dispatch, state }, game) {
+    async addGame({ state }, game) {
       const id = await state.ipfs.id()
       console.log("ID:", id)
       const room = Room(state.ipfs, 'ipfs-pubsub-demo')
       console.log("Room:", room)
-      /*
-      await dispatch('loadGames')
-      let err = await state.ipfs.pubsub.publish('/games', Buffer.from([ Math.random() ]))
-      if (err) { console.log("Write Error:", err) }
-      await dispatch('loadGames')
-      */
       state.games.push(game)
     },
-    async createPrivateKey({ commit }) {
-      const key = await eosjs_ecc.randomKey()
-      commit('setPrivateKey', key)
+    async createPrivateKey() {
+      //const key = await eosjs_ecc.randomKey()
+      //commit('setPrivateKey', key)
     },
-    async loadGames({ commit, state }) {
-      let err = await state.ipfs.pubsub.subscribe('/games')
-      if (err) { console.log("Read Error:", err) }
-      //console.log("Read Games:", buf)//buf.toString('utf8'))
+    async loadGames({ state }) {
+      console.log("loadGames()")
+      let { rows:games } = await rpc.get_table_rows({code: 'decentoddsaz', scope: 'decentoddsaz', table: 'games'})
+      for (let game of games) {
+        state.games.push(game)
+      }
     }
   },
   getters: {
-    publicKey(state) {
-      return eosjs_ecc.privateToPublic(state.privateKey)
+    publicKey() {
+      //return eosjs_ecc.privateToPublic(state.privateKey)
     }
   }
 }

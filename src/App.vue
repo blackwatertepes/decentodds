@@ -20,9 +20,11 @@ export default {
     publicKey() { return this.$store.getters.publicKey }
   },
   mounted: function() {
+    console.log("App Mounted!")
     this.$store.dispatch('createPrivateKey')
     const ipfs = new window.Ipfs()
     ipfs.on('ready', async () => {
+      console.log("IPFS Ready! 2");
       this.$store.commit('setIpfs', ipfs)
       this.$store.dispatch('loadGames')
     })

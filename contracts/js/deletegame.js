@@ -9,11 +9,11 @@ const { ACTOR } = process.env;
       account: ACTOR,
       name: 'deletegame',
       authorization: [{
-        actor: ACTOR,
+        actor: process.argv[2],
         permission: 'active',
       }],
       data: {
-        hash: process.argv[2],
+        hash: process.argv[3],
       },
     }]
   }, {
