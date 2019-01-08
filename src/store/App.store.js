@@ -1,5 +1,4 @@
 import Room from 'ipfs-pubsub-room'
-const rpc = new eosjs_jsonrpc.default('https://kylin.eoscanada.com');
 
 export default {
   state: {
@@ -29,6 +28,7 @@ export default {
     },
     async loadGames({ state }) {
       console.log("loadGames()")
+      const rpc = new eosjs_jsonrpc.default('https://kylin.eoscanada.com');
       let { rows:games } = await rpc.get_table_rows({code: 'decentoddsaz', scope: 'decentoddsaz', table: 'games'})
       for (let game of games) {
         state.games.push(game)
