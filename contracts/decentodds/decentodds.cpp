@@ -27,7 +27,7 @@ void decentodds::deletegame(uint64_t hash) {
     }
 };
 
-void decentodds::bet(uint64_t hash, name better, asset wager, asset deposit) {
+void decentodds::bet(uint64_t hash, uint64_t gamehash, name better, asset wager, asset deposit) {
     require_auth(better);
 
     // TODO: Transfer funds for wager & deposit
@@ -36,8 +36,8 @@ void decentodds::bet(uint64_t hash, name better, asset wager, asset deposit) {
     // If yes, modify
     // Otherwise, create new bet...
     _bets.emplace(get_self(), [&](auto& p) {
-        p.key = _bets.available_primary_key();
         p.hash = hash;
+        p.gamehash = gamehash;
         p.better = better;
         p.wager = wager;
         p.deposit = deposit;
@@ -47,10 +47,24 @@ void decentodds::bet(uint64_t hash, name better, asset wager, asset deposit) {
     });
 };
 
-void decentodds::acceptbet(uint64_t key) {
+void decentodds::unbet(uint64_t hash) {
+    // TODO: require_auth(betowner)
+
+    // TODO: Require bet to have not be accepted
+    auto itr = _bets.find(hash);
+    if (itr != _bets.end()) {
+        _bets.erase(itr);
+    }
+};
+
+void decentodds::reveal(uint64_t hash, uint64_t secret) {
+    // TODO: Update the bet with the secret
+};
+
+void decentodds::acceptbet(uint64_t hash) {
     // TODO: require_auth(game.creator)
 
-    auto itr = _bets.find(key);
+    auto itr = _bets.find(hash);
     if (itr != _bets.end()) {
         _bets.modify(itr, get_self(), [&](auto& p) {
             p.accepted = 1;
@@ -58,7 +72,7 @@ void decentodds::acceptbet(uint64_t key) {
     }
 };
 
-void decentodds::askpayout(uint64_t key, asset payout) {
+void decentodds::askpayout(uint64_t hash, asset payout) {
     // TODO: require_auth(bet.better);
 
     // TODO...
@@ -66,7 +80,7 @@ void decentodds::askpayout(uint64_t key, asset payout) {
     // And, the balance of all resolved assets is equal to the pot...
     // Then, resolve the round
 
-    auto itr = _bets.find(key);
+    auto itr = _bets.find(hash);
     if (itr != _bets.end()) {
         _bets.modify(itr, get_self(), [&](auto& p) {
             p.requestedPayout = payout;
@@ -83,4 +97,4 @@ void decentodds::blowupgame(uint64_t hash) {
     }
 };
 
-EOSIO_DISPATCH( decentodds, (version)(creategame)(deletegame)(acceptbet)(bet)(askpayout)(blowupgame))
+EOSIO_DISPATCH( decentodds, (version)(creategame)(deletegame)(acceptbet)(bet)(unbet)(reveal)(askpayout)(blowupgame))

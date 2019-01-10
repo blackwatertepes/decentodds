@@ -1,5 +1,5 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Sun Jan  6 19:19:24 2019",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Wed Jan  9 22:02:42 2019",
     "version": "eosio::abi/1.1",
     "structs": [
         {
@@ -35,6 +35,10 @@
                     "type": "uint64"
                 },
                 {
+                    "name": "gamehash",
+                    "type": "uint64"
+                },
+                {
                     "name": "better",
                     "type": "name"
                 },
@@ -53,7 +57,7 @@
             "base": "",
             "fields": [
                 {
-                    "name": "key",
+                    "name": "hash",
                     "type": "uint64"
                 },
                 {
@@ -61,7 +65,7 @@
                     "type": "name"
                 },
                 {
-                    "name": "hash",
+                    "name": "gamehash",
                     "type": "uint64"
                 },
                 {
@@ -81,8 +85,12 @@
                     "type": "bool"
                 },
                 {
-                    "name": "createdAt",
+                    "name": "secret",
                     "type": "uint64"
+                },
+                {
+                    "name": "createdAt",
+                    "type": "uint32"
                 }
             ]
         },
@@ -134,11 +142,11 @@
                 },
                 {
                     "name": "round",
-                    "type": "uint64"
+                    "type": "uint32"
                 },
                 {
                     "name": "createdAt",
-                    "type": "uint64"
+                    "type": "uint32"
                 }
             ]
         },
@@ -152,14 +160,38 @@
                 },
                 {
                     "name": "roundsPlayed",
-                    "type": "uint64"
+                    "type": "uint32"
                 },
                 {
                     "name": "totalBetsPlaced",
-                    "type": "uint64"
+                    "type": "asset"
                 },
                 {
                     "name": "createdAt",
+                    "type": "uint32"
+                }
+            ]
+        },
+        {
+            "name": "reveal",
+            "base": "",
+            "fields": [
+                {
+                    "name": "hash",
+                    "type": "uint64"
+                },
+                {
+                    "name": "secret",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "unbet",
+            "base": "",
+            "fields": [
+                {
+                    "name": "hash",
                     "type": "uint64"
                 }
             ]
@@ -200,6 +232,16 @@
         {
             "name": "deletegame",
             "type": "deletegame",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "reveal",
+            "type": "reveal",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "unbet",
+            "type": "unbet",
             "ricardian_contract": ""
         },
         {
