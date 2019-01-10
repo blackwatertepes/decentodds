@@ -1,5 +1,5 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Wed Jan  9 22:02:42 2019",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Wed Jan  9 22:50:40 2019",
     "version": "eosio::abi/1.1",
     "structs": [
         {
@@ -7,7 +7,7 @@
             "base": "",
             "fields": [
                 {
-                    "name": "hash",
+                    "name": "key",
                     "type": "uint64"
                 }
             ]
@@ -17,7 +17,7 @@
             "base": "",
             "fields": [
                 {
-                    "name": "hash",
+                    "name": "key",
                     "type": "uint64"
                 },
                 {
@@ -32,10 +32,10 @@
             "fields": [
                 {
                     "name": "hash",
-                    "type": "uint64"
+                    "type": "checksum256"
                 },
                 {
-                    "name": "gamehash",
+                    "name": "gamekey",
                     "type": "uint64"
                 },
                 {
@@ -57,15 +57,19 @@
             "base": "",
             "fields": [
                 {
-                    "name": "hash",
+                    "name": "key",
                     "type": "uint64"
+                },
+                {
+                    "name": "hash",
+                    "type": "checksum256"
                 },
                 {
                     "name": "better",
                     "type": "name"
                 },
                 {
-                    "name": "gamehash",
+                    "name": "gamekey",
                     "type": "uint64"
                 },
                 {
@@ -86,7 +90,7 @@
                 },
                 {
                     "name": "secret",
-                    "type": "uint64"
+                    "type": "checksum256"
                 },
                 {
                     "name": "createdAt",
@@ -99,7 +103,7 @@
             "base": "",
             "fields": [
                 {
-                    "name": "hash",
+                    "name": "key",
                     "type": "uint64"
                 }
             ]
@@ -114,7 +118,7 @@
                 },
                 {
                     "name": "hash",
-                    "type": "uint64"
+                    "type": "checksum256"
                 }
             ]
         },
@@ -123,7 +127,7 @@
             "base": "",
             "fields": [
                 {
-                    "name": "hash",
+                    "name": "key",
                     "type": "uint64"
                 }
             ]
@@ -133,8 +137,12 @@
             "base": "",
             "fields": [
                 {
-                    "name": "hash",
+                    "name": "key",
                     "type": "uint64"
+                },
+                {
+                    "name": "hash",
+                    "type": "checksum256"
                 },
                 {
                     "name": "creator",
@@ -177,12 +185,12 @@
             "base": "",
             "fields": [
                 {
-                    "name": "hash",
+                    "name": "key",
                     "type": "uint64"
                 },
                 {
                     "name": "secret",
-                    "type": "uint64"
+                    "type": "checksum256"
                 }
             ]
         },
@@ -191,7 +199,7 @@
             "base": "",
             "fields": [
                 {
-                    "name": "hash",
+                    "name": "key",
                     "type": "uint64"
                 }
             ]

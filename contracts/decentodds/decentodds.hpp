@@ -17,45 +17,49 @@ public:
     // [[eosio::action]] will tell eosio-cpp that the function is to be exposed as an action for user of the smart contract.
     [[eosio::action]] void version();
     // NOTE: Host methods...
-    [[eosio::action]] void creategame(name creator, uint64_t hash);
-    [[eosio::action]] void deletegame(uint64_t hash);
-    [[eosio::action]] void acceptbet(uint64_t hash);
+    [[eosio::action]] void creategame(name creator, checksum256 hash);
+    [[eosio::action]] void deletegame(uint64_t key);
+    [[eosio::action]] void acceptbet(uint64_t key);
     // NOTE: Player methods...
-    [[eosio::action]] void bet(uint64_t hash, uint64_t gamehash, name better, asset wager, asset deposit);
-    [[eosio::action]] void unbet(uint64_t hash);
-    [[eosio::action]] void reveal(uint64_t hash, uint64_t secret);
-    [[eosio::action]] void askpayout(uint64_t hash, asset payout);
+    [[eosio::action]] void bet(checksum256 hash, uint64_t gamekey, name better, asset wager, asset deposit);
+    [[eosio::action]] void unbet(uint64_t key);
+    [[eosio::action]] void reveal(uint64_t key, checksum256 secret);
+    [[eosio::action]] void askpayout(uint64_t key, asset payout);
     // NOTE: Admin methods...
-    [[eosio::action]] void blowupgame(uint64_t hash); // Fix unresolved games, by collecting all outstanding bets, and erasing the game...
+    [[eosio::action]] void blowupgame(uint64_t key); // Fix unresolved games, by collecting all outstanding bets, and erasing the game...
 
     //private: -- not private so the cleos get table call can see the table data.
 
     struct [[eosio::table]] games
     {
-        uint64_t     hash;
+        uint64_t     key;
+        checksum256  hash;
         name         creator;
         uint32_t     round = 0;
         uint32_t     createdAt;
 
-        uint64_t primary_key() const { return hash; }
-        //name     by_creator() const { return creator; }
+        uint64_t      primary_key() const { return key; }
+        //checksum256   by_hash() const { return hash; }
+        //name        by_creator() const { return creator; }
     };
     typedef multi_index<"games"_n, games> gamestable;
+      //indexed_by<"hash"_n, const_mem_fun<games, name, &games::by_hash>>> gamestable;
       //indexed_by<"creator"_n, const_mem_fun<games, name, &games::by_creator>>> gamestable;
 
     struct [[eosio::table]] bets
     {
-        uint64_t      hash;
+        uint64_t      key;
+        checksum256   hash;
         name          better;
-        uint64_t      gamehash;
+        uint64_t      gamekey;
         asset         wager;
         asset         deposit;
         asset         requestedPayout;
         bool          accepted;
-        uint64_t      secret;
+        checksum256   secret;
         uint32_t      createdAt;
 
-        uint64_t primary_key() const { return hash; }
+        uint64_t primary_key() const { return key; }
         //name by_better() const { return better; }
         //uint64_t by_gamehash() const {return gamehash; }
     };
