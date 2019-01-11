@@ -1,8 +1,5 @@
 <template>
   <div id="app">
-    <h2>Private Key: {{ privateKey }}</h2>
-    <h2>Public Key: {{ publicKey }}</h2>
-    <img alt="Vue logo" src="./assets/logo.png">
     <Games />
   </div>
 </template>
@@ -92,6 +89,12 @@ ipfs.on('ready', async () => {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 350px;
+}
+#container {
+  top: 200px;
+}
+button {
+  padding: 3px;
 }
 </style>
