@@ -31,6 +31,12 @@ void decentodds::deletegame(uint64_t key) {
 void decentodds::bet(checksum256 hash, uint64_t gamekey, name better, asset wager, asset deposit) {
     require_auth(better);
 
+    // First, make sure the game exists...
+    auto itr = _games.find(gamekey);
+    if (itr == _games.end()) {
+      return; // No Game Found!
+    }
+
     // TODO: Transfer funds for wager & deposit
 
     // TODO: Check if a bet already exists
