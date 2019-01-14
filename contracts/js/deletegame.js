@@ -13,7 +13,7 @@ const { ACTOR } = process.env;
         permission: 'active',
       }],
       data: {
-        hash: process.argv[3],
+        key: process.argv[3],
       },
     }]
   }, {

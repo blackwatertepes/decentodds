@@ -1,7 +1,11 @@
 const dotenv = require('dotenv').config();
 const { api } = require('./base');
+const ecc = require('eosjs-ecc');
 
 const { ACTOR } = process.env;
+
+const hash = ecc.sha256(process.argv[3]);
+console.log("Saving Data as Hash:", hash);
 
 (async () => {
   const result = await api.transact({
@@ -14,7 +18,7 @@ const { ACTOR } = process.env;
       }],
       data: {
         creator: process.argv[2],
-        hash: process.argv[3]
+        hash: ecc.sha256(process.argv[3])
       },
     }]
   }, {
