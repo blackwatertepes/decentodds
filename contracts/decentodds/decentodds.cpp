@@ -14,7 +14,7 @@ void decentodds::creategame(name creator, checksum256 hash) {
         p.hash = hash;
         p.creator = creator;
         p.round = 0;
-        p.createdAt = 0; // TODO
+        p.createdAt = current_time();
     });
 };
 
@@ -46,7 +46,7 @@ void decentodds::bet(checksum256 hash, uint64_t gamekey, name better, asset wage
         //p.requestedPayout = 0;
         p.accepted = 0;
         //p.secret;
-        p.createdAt = 0; // TODO
+        p.createdAt = current_time();
     });
 };
 

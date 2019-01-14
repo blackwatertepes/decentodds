@@ -35,8 +35,8 @@ public:
         uint64_t     key;
         checksum256  hash;
         name         creator;
-        uint32_t     round = 0;
-        uint32_t     createdAt;
+        uint32_t     round;
+        uint64_t     createdAt;
 
         uint64_t      primary_key() const { return key; }
         //checksum256   by_hash() const { return hash; }
@@ -57,7 +57,7 @@ public:
         asset         requestedPayout;
         bool          accepted;
         checksum256   secret;
-        uint32_t      createdAt;
+        uint64_t      createdAt;
 
         uint64_t primary_key() const { return key; }
         //name by_better() const { return better; }
@@ -73,7 +73,7 @@ public:
         name          player;
         uint32_t      roundsPlayed;
         asset         totalBetsPlaced;
-        uint32_t      createdAt;
+        uint64_t      createdAt;
 
         name primary_key() const { return player; }
     };
