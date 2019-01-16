@@ -19,7 +19,12 @@ void decentodds::creategame(name creator, checksum256 hash) {
 };
 
 void decentodds::deletegame(uint64_t key) {
-    // TODO: require_auth(gameowner)
+    // NOTE: Require auth from the game creator...
+    for(auto& item : _games) {
+    if (item.key == key) {
+            require_auth(item.creator);
+        }
+    }
 
     // TODO: Require game to have no open bets
     auto itr = _games.find(key);
