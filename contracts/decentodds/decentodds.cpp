@@ -103,7 +103,8 @@ void decentodds::askpayout(uint64_t key, asset payout) {
 };
 
 void decentodds::blowupgame(uint64_t key) {
-    // TODO: require_auth(game admin)
+    // NOTE: Only the contract owner can blowup games...
+    require_auth(_self);
 
     auto itr = _games.find(key);
     if (itr != _games.end()) {
