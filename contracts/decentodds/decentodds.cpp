@@ -38,6 +38,13 @@ void decentodds::deletegame(uint64_t key) {
     if (itr != _games.end()) {
         _games.erase(itr);
     }
+
+    for(auto& item : _bets) {
+        if (item.gamekey == key) {
+            // TODO: Transfer funds to better
+            // TODO: _bets.erase(item.key);
+        }
+    }
 };
 
 void decentodds::bet(checksum256 hash, uint64_t gamekey, name better, asset wager, asset deposit) {
@@ -143,17 +150,43 @@ void decentodds::askpayout(uint64_t key, asset payout) {
         }
     }
 
-    // TODO...
-    // Once all players who have bet, have reported...
-    // And, the balance of all resolved assets is equal to the pot...
-    // Then, resolve the round
-
     auto itr = _bets.find(key);
     if (itr != _bets.end()) {
         _bets.modify(itr, get_self(), [&](auto& p) {
             p.requestedPayout = payout;
         });
     }
+
+    // NOTE: Check to see if all bets have been ask for payout, and the sum is == to the pot
+    /*
+    // assign gamekey
+    // assign pot
+    // assign asksum
+    for(auto& item : _bets) {
+      if (item.gamekey == gamekey) {
+          if (!item.requestedPayout) {
+              print("Bet has yet to be resolved!");
+              return;
+          }
+
+          pot += item.wager;
+          asksum += item.requestedPayout;
+      }
+    }
+
+    if (pot != sum) {
+       print("Pot not yet 100% accounted for!");
+       return;
+    }
+
+    for(auto& item : _bets) {
+        if (item.gamekey == gamekey) {
+            // TODO: Transfer funds
+        }
+    }
+    */
+
+    // TODO: Erase all bets
 };
 
 void decentodds::blowupgame(uint64_t key) {
