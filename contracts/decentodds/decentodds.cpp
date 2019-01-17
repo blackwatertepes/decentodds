@@ -26,7 +26,13 @@ void decentodds::deletegame(uint64_t key) {
         }
     }
 
-    // TODO: Require game to have no open bets
+    // NOTE: Game can not have any open bets...
+    for(auto& item : _bets) {
+        if (item.gamekey == key) {
+            print("Bets exists!");
+            return;
+        }
+    }
 
     auto itr = _games.find(key);
     if (itr != _games.end()) {
