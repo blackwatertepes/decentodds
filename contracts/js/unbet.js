@@ -7,13 +7,13 @@ const { ACTOR } = process.env;
   const result = await api.transact({
     actions: [{
       account: ACTOR,
-      name: 'advancegame',
+      name: 'unbet',
       authorization: [{
-        actor: ACTOR,
+        actor: process.argv[2],
         permission: 'active',
       }],
       data: {
-        gameId: process.argv[2]
+        key: process.argv[3],
       },
     }]
   }, {

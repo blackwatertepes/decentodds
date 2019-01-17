@@ -54,8 +54,8 @@ public:
         uint64_t      gamekey;
         asset         wager;
         asset         deposit;
-        asset         requestedPayout;
         bool          accepted;
+        asset         requestedPayout;
         checksum256   secret;
         uint64_t      createdAt;
 

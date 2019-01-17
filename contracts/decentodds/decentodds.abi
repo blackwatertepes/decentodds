@@ -1,5 +1,5 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Tue Jan 15 22:31:53 2019",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Wed Jan 16 21:43:30 2019",
     "version": "eosio::abi/1.1",
     "structs": [
         {
@@ -81,12 +81,12 @@
                     "type": "asset"
                 },
                 {
-                    "name": "requestedPayout",
-                    "type": "asset"
-                },
-                {
                     "name": "accepted",
                     "type": "bool"
+                },
+                {
+                    "name": "requestedPayout",
+                    "type": "asset"
                 },
                 {
                     "name": "secret",

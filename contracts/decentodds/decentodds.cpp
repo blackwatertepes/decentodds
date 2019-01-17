@@ -27,6 +27,7 @@ void decentodds::deletegame(uint64_t key) {
     }
 
     // TODO: Require game to have no open bets
+
     auto itr = _games.find(key);
     if (itr != _games.end()) {
         _games.erase(itr);
@@ -36,17 +37,24 @@ void decentodds::deletegame(uint64_t key) {
 void decentodds::bet(checksum256 hash, uint64_t gamekey, name better, asset wager, asset deposit) {
     require_auth(better);
 
-    // First, make sure the game exists...
+    // NOTE: First, make sure the game exists...
     auto itr = _games.find(gamekey);
     if (itr == _games.end()) {
-      return; // No Game Found!
+        print("No game found!");
+        return; // No Game Found!
+    }
+
+    // NOTE: If the bet already exists, exit...
+    for(auto& item : _bets) {
+        if (item.gamekey == gamekey && item.better == better) {
+            print("Bet already exists!");
+            return;
+        }
     }
 
     // TODO: Transfer funds for wager & deposit
 
-    // TODO: Check if a bet already exists
-    // If yes, modify
-    // Otherwise, create new bet...
+    // NOTE: Otherwise, create new bet...
     _bets.emplace(get_self(), [&](auto& p) {
         p.key = _bets.available_primary_key();
         p.hash = hash;
@@ -54,17 +62,29 @@ void decentodds::bet(checksum256 hash, uint64_t gamekey, name better, asset wage
         p.better = better;
         p.wager = wager;
         p.deposit = deposit;
-        //p.requestedPayout = 0;
         p.accepted = 0;
+        //p.requestedPayout = 0;
         //p.secret;
         p.createdAt = current_time();
     });
 };
 
 void decentodds::unbet(uint64_t key) {
-    // TODO: require_auth(betowner)
+    for(auto& item : _bets) {
+        if (item.key == key) {
+            // NOTE: Only the better can unbet
+            require_auth(item.better);
 
-    // TODO: Require bet to have not be accepted
+            // NOTE: Accepted bets can be unbet
+            if (item.accepted == 1) {
+              print("Bet has already been accepted!");
+              return;
+            }
+        }
+    }
+
+    // TODO: Transfer funds for wager & deposit
+
     auto itr = _bets.find(key);
     if (itr != _bets.end()) {
         _bets.erase(itr);

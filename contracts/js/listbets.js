@@ -8,9 +8,6 @@ const { ACTOR } = process.env;
     code: 'decentoddsaz',
     scope: 'decentoddsaz',
     table: 'bets',
-    table_key: 'hash',
-    index_position: 2,
-    key_type: 'uint64_t'
   });
   console.log(bets.rows);
 })();
