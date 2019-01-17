@@ -28,8 +28,8 @@ void decentodds::deletegame(uint64_t key) {
 
     // NOTE: Game can not have any open bets...
     for(auto& item : _bets) {
-        if (item.gamekey == key) {
-            print("Bets exists!");
+        if (item.gamekey == key && item.accepted == 1) {
+            print("Open bets exists!");
             return;
         }
     }
@@ -98,11 +98,34 @@ void decentodds::unbet(uint64_t key) {
 };
 
 void decentodds::reveal(uint64_t key, checksum256 secret) {
-    // TODO: Update the bet with the secret
+    for(auto& item : _bets) {
+        if (item.key == key) {
+            // NOTE: Only the better can reveal
+            require_auth(item.better);
+        }
+    }
+
+    auto itr = _bets.find(key);
+    if (itr != _bets.end()) {
+        _bets.modify(itr, get_self(), [&](auto& p) {
+            p.secret = secret;
+        });
+    }
 };
 
 void decentodds::acceptbet(uint64_t key) {
-    // TODO: require_auth(game.creator)
+    for(auto& bet : _bets) {
+        if (bet.key == key) {
+            // TODO: Only the game creator can accept the bet
+            /*
+            for(auto& game : _games) {
+                if (game.key = bet.gamekey) {
+                    require_auth(game.better);
+                }
+            }
+            */
+        }
+    }
 
     auto itr = _bets.find(key);
     if (itr != _bets.end()) {
@@ -113,7 +136,12 @@ void decentodds::acceptbet(uint64_t key) {
 };
 
 void decentodds::askpayout(uint64_t key, asset payout) {
-    // TODO: require_auth(bet.better);
+    for(auto& item : _bets) {
+        if (item.key == key) {
+            // NOTE: Only the better can ask for a payout
+            require_auth(item.better);
+        }
+    }
 
     // TODO...
     // Once all players who have bet, have reported...
@@ -131,6 +159,8 @@ void decentodds::askpayout(uint64_t key, asset payout) {
 void decentodds::blowupgame(uint64_t key) {
     // NOTE: Only the contract owner can blowup games...
     require_auth(_self);
+
+    // TODO: Transfer funds to contract owner, and delete bets
 
     auto itr = _games.find(key);
     if (itr != _games.end()) {
