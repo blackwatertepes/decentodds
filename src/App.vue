@@ -6,6 +6,7 @@
 
 <script>
 import Games from './components/Games.vue'
+import Deck from 'deck-of-cards';
 
 export default {
   name: 'app',
@@ -25,6 +26,17 @@ export default {
       this.$store.commit('setIpfs', ipfs)
       this.$store.dispatch('loadGames')
     })
+
+    let $container = document.getElementById('container');
+
+    // create Deck
+    let deck = window.deck = Deck();
+
+    // add to DOM
+    deck.mount($container);
+
+    deck.fan();
+    deck.flip();
   }
 }
 
