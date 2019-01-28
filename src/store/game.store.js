@@ -21,8 +21,16 @@ export default {
         hash: ecc.sha256(game.content)
       }})
     },
-    deletegame({ dispatch, state }, index) {
-      let { key } = state.games[index];
+    bet({ dispatch }, key) {
+      dispatch('transact', { name: 'bet', data: {
+        hash: ecc.sha256('asdf'),
+        gamekey: key,
+        better: 'decentoddsaz',
+        wager: '1 EOS',
+        deposit: '1 EOS'
+      }})
+    },
+    deletegame({ dispatch, state }, key) {
       dispatch('transact', { name: 'deletegame', data: {
         key,
       }})

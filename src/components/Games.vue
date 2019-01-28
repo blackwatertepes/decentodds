@@ -3,9 +3,9 @@
     <h1>Active Games: {{ games.length }}</h1>
     <button v-on:click="addGame">Start new game</button>
     <ul id="games-list">
-      <li v-for="(game, key) in games" :key="key">
+      <li v-for="(game, idx) in games" :key="idx">
         {{ game }}
-        <router-link :to="{ name: 'game', params: { id: key }}">Play</router-link>
+        <router-link :to="{ name: 'game', params: { id: game.key }}">Play</router-link>
         <button @click="deleteGame(game.key)">Delete</button>
       </li>
     </ul>
@@ -17,9 +17,6 @@
     name: 'Games',
     computed: {
       games() { return this.$store.state.game.games }
-    },
-    mounted: function() {
-      this.$store.dispatch('refreshGames')
     },
     methods: {
       addGame() {
