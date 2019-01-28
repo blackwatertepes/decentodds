@@ -24,7 +24,7 @@
       const ipfs = window.ipfs = new Ipfs()
       ipfs.on('ready', async () => {
         console.log("IPFS Ready!")
-        this.$store.commit('setIpfs', ipfs)
+        this.$store.commit('setIpfs', { ipfs })
       })
 
       let $container = document.getElementById('container')

@@ -10,6 +10,9 @@ export default {
     ipfs: null,
   },
   mutations: {
+    setIpfs(state, { ipfs }) {
+      state.ipfs = ipfs
+    }
   },
   actions: {
     async transact({ getters }, { name, data }) {

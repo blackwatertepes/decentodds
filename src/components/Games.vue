@@ -3,21 +3,21 @@
     <h1>Active Games: {{ games.length }}</h1>
     <button v-on:click="addGame">Start new game</button>
     <ul id="games-list">
-      <li v-for="(game, key) in games" :key="key">
-        <span>{{ game }}</span>
-        <button @click="deleteGame(key)">
-          Delete
-        </button>
-      </li>
+      <Game
+        v-for="(game, key) in games"
+        :key="key"
+        :game="game" />
     </ul>
   </div>
 </template>
 
 <script>
+  import Game from './Game.vue'
+
   export default {
     name: 'Games',
-    props: {
-      msg: String
+    components: {
+      Game
     },
     computed: {
       games() { return this.$store.state.game.games }
@@ -28,9 +28,6 @@
     methods: {
       addGame() {
         this.$store.dispatch('addGame', { creator: 'decentoddsaz', content: 'something' })
-      },
-      deleteGame(key) {
-        this.$store.dispatch('deletegame', key);
       }
     }
   }

@@ -2,12 +2,17 @@
 import ecc from 'eosjs-ecc';
 
 const CONTRACT_OWNER = 'decentoddsaz'
-const REFRESH_GAMES_INT_IN_SECONDS = 1
+const REFRESH_GAMES_INT_IN_SECONDS = 2
 
 export default {
   state: {
     games: [],
     refreshGamesInt: null,
+  },
+  mutations: {
+    setGames(state, { games }) {
+      state.games = games
+    }
   },
   actions: {
     async addGame({ dispatch }, game) {
@@ -27,7 +32,7 @@ export default {
       if (!state.refreshGamesInt) {
         state.refreshGamesInt = setInterval(async () => {
           let { rows:games } = await rpc.get_table_rows({code: CONTRACT_OWNER, scope: CONTRACT_OWNER, table: 'games'})
-          state.games = games;
+          this.commit('setGames', { games })
         }, REFRESH_GAMES_INT_IN_SECONDS * 1000);
       }
     }
