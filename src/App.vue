@@ -5,8 +5,9 @@
 </template>
 
 <script>
-import Games from './components/Games.vue'
+import Ipfs from 'ipfs';
 import Deck from 'deck-of-cards';
+import Games from './components/Games.vue'
 
 export default {
   name: 'app',
@@ -19,13 +20,15 @@ export default {
   },
   mounted: function() {
     console.log("App Mounted!")
+    this.$store.dispatch('loadGames')
+    /*
     this.$store.dispatch('createPrivateKey')
-    const ipfs = new window.Ipfs()
+    const ipfs = window.ipfs = new Ipfs()
     ipfs.on('ready', async () => {
       console.log("IPFS Ready! 2");
       this.$store.commit('setIpfs', ipfs)
-      this.$store.dispatch('loadGames')
     })
+    */
 
     let $container = document.getElementById('container');
 
@@ -41,7 +44,8 @@ export default {
 }
 
 // IPFS...
-const ipfs = new window.Ipfs({
+/*
+const ipfs = window.ipfs = new Ipfs({
   //repo: 'com/wargoats/' + Math.random(),
   EXPERIMENTAL: {
     pubsub: true
@@ -89,8 +93,8 @@ ipfs.on('ready', async () => {
       //console.log(file.content.toString('utf8'))
     })
   })
-  */
 })
+  */
 
 </script>
 

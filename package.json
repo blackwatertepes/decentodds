@@ -1,6 +1,6 @@
 {
   "name": "decent-odds",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "deck-of-cards": "^0.1.8",
+    "eosjs": "^20.0.0-beta3",
+    "eosjs-ecc": "^4.0.4",
+    "ipfs": "^0.34.4",
     "ipfs-pubsub-room": "^1.4.0",
     "vue": "^2.5.17",
     "vuex": "^3.0.1"
