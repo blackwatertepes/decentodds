@@ -3,7 +3,7 @@
     <h1>Active Games: {{ games.length }}</h1>
     <button v-on:click="addGame">Start new game</button>
     <ul id="games-list">
-      <li v-for="(game, key) in games">
+      <li v-for="(game, key) in games" :key="key">
         <span>{{ game }}</span>
         <button @click="deleteGame(key)">
           Delete
@@ -20,7 +20,7 @@ export default {
     msg: String
   },
   computed: {
-    games() { return this.$store.state.games }
+    games() { return this.$store.state.game.games }
   },
   mounted: function() {
     this.$store.dispatch('refreshGames')

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Ipfs from 'ipfs';
+//import Ipfs from 'ipfs';
 import Deck from 'deck-of-cards';
 import Games from './components/Games.vue'
 
