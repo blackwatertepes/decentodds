@@ -14,9 +14,6 @@
 </template>
 
 <script>
-import { Api, JsonRpc } from 'eosjs';
-import JsSignatureProvider from 'eosjs/dist/eosjs-jssig';
-
 export default {
   name: 'Games',
   props: {
@@ -25,35 +22,15 @@ export default {
   computed: {
     games() { return this.$store.state.games }
   },
+  mounted: function() {
+    this.$store.dispatch('refreshGames')
+  },
   methods: {
     addGame() {
-      this.$store.dispatch('addGame', {})
+      this.$store.dispatch('addGame', { creator: 'decentoddsaz', content: 'something' })
     },
     deleteGame(key) {
-      let game = this.games[key];
-      console.log("game:", game);
-      const defaultPrivateKey = "5JGMvtstqP2SNrVBRhMCY269sP83T6xuFZgPAxf6JHFoJdJCFrE";
-      const rpc = new JsonRpc('https://kylin.eoscanada.com');
-      const signatureProvider = new JsSignatureProvider([defaultPrivateKey]);
-      const api = new Api({ rpc, signatureProvider });
-      console.log("deletegame:", defaultPrivateKey, rpc, api);
-      api.transact({
-        actions: [{
-          account: 'decentoddsaz',
-          name: 'deletegame',
-          authorization: [{
-            actor: 'decentoddsaz',
-            permission: 'active',
-          }],
-          data: {
-            key: game.key,
-          },
-        }]
-      }, {
-        blocksBehind: 3,
-        expireSeconds: 30,
-      });
-      this.games.splice(key, 1);
+      this.$store.dispatch('deletegame', key);
     }
   }
 }

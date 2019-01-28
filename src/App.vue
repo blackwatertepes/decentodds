@@ -20,7 +20,6 @@ export default {
   },
   mounted: function() {
     console.log("App Mounted!")
-    this.$store.dispatch('loadGames')
     /*
     this.$store.dispatch('createPrivateKey')
     const ipfs = window.ipfs = new Ipfs()
