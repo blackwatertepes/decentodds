@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <Games />
+    <router-link :to="{ name: 'root' }">Home</router-link>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -11,9 +12,6 @@
 
   export default {
     name: 'app',
-    components: {
-      Games
-    },
     computed: {
       privateKey() { return this.$store.state.privateKey },
       publicKey() { return this.$store.getters.publicKey }

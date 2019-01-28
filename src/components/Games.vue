@@ -3,22 +3,18 @@
     <h1>Active Games: {{ games.length }}</h1>
     <button v-on:click="addGame">Start new game</button>
     <ul id="games-list">
-      <Game
-        v-for="(game, key) in games"
-        :key="key"
-        :game="game" />
+      <li v-for="(game, key) in games" :key="key">
+        {{ game }}
+        <router-link :to="{ name: 'game', params: { id: key }}">Play</router-link>
+        <button @click="deleteGame(game.key)">Delete</button>
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
-  import Game from './Game.vue'
-
   export default {
     name: 'Games',
-    components: {
-      Game
-    },
     computed: {
       games() { return this.$store.state.game.games }
     },
@@ -28,6 +24,9 @@
     methods: {
       addGame() {
         this.$store.dispatch('addGame', { creator: 'decentoddsaz', content: 'something' })
+      },
+      deleteGame(key) {
+        this.$store.dispatch('deletegame', key)
       }
     }
   }

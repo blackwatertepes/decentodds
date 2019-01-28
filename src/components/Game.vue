@@ -1,23 +1,27 @@
 <template>
-  <li class="game">
+  <div class="game">
     <span>{{ game }}</span>
-    <button @click="deleteGame(game.key)">
-      Delete
-    </button>
-  </li>
+    <button @click="deleteGame(game.key)">Delete</button>
+  </div>
 </template>
 
 <script>
   export default {
     name: 'Game',
-    props: ['game'],
     computed: {
+      game () {
+        const { id } = this.$route.params
+        return this.$store.state.game.games.find((game) => {
+          return game.key == id
+        })
+      }
     },
     mounted: function() {
     },
     methods: {
       deleteGame(key) {
-        this.$store.dispatch('deletegame', key);
+        this.$store.dispatch('deletegame', key)
+        this.$router.push({ name: 'root' })
       }
     }
   }
