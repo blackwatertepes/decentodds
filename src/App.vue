@@ -8,7 +8,6 @@
 <script>
   import Ipfs from '../node_modules/ipfs/dist'
   import Deck from 'deck-of-cards'
-  import Games from './components/Games.vue'
 
   export default {
     name: 'app',

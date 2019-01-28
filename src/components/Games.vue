@@ -1,6 +1,6 @@
 <template>
   <div id="games">
-    <h1>Active Games: {{ games.length }}</h1>
+    <h2>Active Games: {{ games.length }}</h2>
     <button v-on:click="addGame">Start new game</button>
     <ul id="games-list">
       <li v-for="(game, idx) in games" :key="idx">

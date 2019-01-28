@@ -6,10 +6,14 @@ const REFRESH_GAMES_INT_IN_SECONDS = 2
 
 export default {
   state: {
+    bets: [],
     games: [],
     refreshGamesInt: null,
   },
   mutations: {
+    setBets(state, { bets }) {
+      state.bets = bets
+    },
     setGames(state, { games }) {
       state.games = games
     }
@@ -35,7 +39,12 @@ export default {
         key,
       }})
     },
-    refreshGames({ getters, state }) {
+    async updateBets({ getters }, key) {
+      const { rpc } = getters.eos;
+      let { rows:bets } = await rpc.get_table_rows({code: CONTRACT_OWNER, scope: CONTRACT_OWNER, table: 'bets'})
+      this.commit('setBets', { bets })
+    },
+    refreshGames({ dispatch, getters, state }) {
       const { rpc } = getters.eos;
       if (!state.refreshGamesInt) {
         state.refreshGamesInt = setInterval(async () => {

@@ -4,12 +4,18 @@
     <button @click="deleteGame(game.key)">Delete</button>
     <br />
     <button @click="bet(game.key)">Bet</button>
+    <Bets />
   </div>
 </template>
 
 <script>
+  import Bets from './Bets.vue'
+
   export default {
     name: 'Game',
+    components: {
+      Bets
+    },
     computed: {
       game () {
         const { id } = this.$route.params
@@ -19,6 +25,7 @@
       }
     },
     mounted: function() {
+      const { id } = this.$route.params
     },
     methods: {
       bet(key) {
