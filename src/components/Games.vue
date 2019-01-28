@@ -14,26 +14,26 @@
 </template>
 
 <script>
-export default {
-  name: 'Games',
-  props: {
-    msg: String
-  },
-  computed: {
-    games() { return this.$store.state.game.games }
-  },
-  mounted: function() {
-    this.$store.dispatch('refreshGames')
-  },
-  methods: {
-    addGame() {
-      this.$store.dispatch('addGame', { creator: 'decentoddsaz', content: 'something' })
+  export default {
+    name: 'Games',
+    props: {
+      msg: String
     },
-    deleteGame(key) {
-      this.$store.dispatch('deletegame', key);
+    computed: {
+      games() { return this.$store.state.game.games }
+    },
+    mounted: function() {
+      this.$store.dispatch('refreshGames')
+    },
+    methods: {
+      addGame() {
+        this.$store.dispatch('addGame', { creator: 'decentoddsaz', content: 'something' })
+      },
+      deleteGame(key) {
+        this.$store.dispatch('deletegame', key);
+      }
     }
   }
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

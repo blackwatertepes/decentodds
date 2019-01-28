@@ -11,12 +11,6 @@ export default {
   },
   actions: {
     async addGame({ dispatch }, game) {
-      /*
-      const id = await state.ipfs.id()
-      console.log("ID:", id)
-      const room = Room(state.ipfs, 'ipfs-pubsub-demo')
-      console.log("Room:", room)
-      */
       dispatch('transact', { name: 'creategame', data: {
         creator: game.creator,
         hash: ecc.sha256(game.content)

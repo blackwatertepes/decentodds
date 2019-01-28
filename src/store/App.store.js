@@ -8,15 +8,8 @@ const EOS_RPC_URI = 'https://kylin.eoscanada.com'
 export default {
   state: {
     ipfs: null,
-    privateKey: '',
   },
   mutations: {
-    setIpfs(state, ipfs) {
-      state.ipfs = ipfs
-    },
-    setPrivateKey(state, key) {
-      state.privateKey = key
-    }
   },
   actions: {
     async transact({ getters }, { name, data }) {
@@ -36,10 +29,6 @@ export default {
         expireSeconds: 30,
       });
     },
-    async createPrivateKey() {
-      //const key = await eosjs_ecc.randomKey()
-      //commit('setPrivateKey', key)
-    },
   },
   getters: {
     eos() {
@@ -48,9 +37,6 @@ export default {
       const api = new Api({ rpc, signatureProvider })
 
       return { api, rpc }
-    },
-    publicKey() {
-      //return eosjs_ecc.privateToPublic(state.privateKey)
     }
   }
 }
