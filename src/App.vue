@@ -17,7 +17,7 @@
     },
     mounted: function() {
       console.log("App Mounted!")
-
+      
       this.$store.dispatch('refreshGames')
 
       const ipfs = window.ipfs = new Ipfs()

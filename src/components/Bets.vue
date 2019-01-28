@@ -19,7 +19,7 @@
     },
     mounted: function() {
       const { id } = this.$route.params
-      this.$store.dispatch('updateBets', id)
+      this.$store.dispatch('refreshBets', id)
     }
   }
 </script>

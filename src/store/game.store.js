@@ -2,13 +2,14 @@
 import ecc from 'eosjs-ecc';
 
 const CONTRACT_OWNER = 'decentoddsaz'
-const REFRESH_GAMES_INT_IN_SECONDS = 2
+const REFRESH_INT_IN_SECONDS = 2
 
 export default {
   state: {
     bets: [],
     games: [],
     refreshGamesInt: null,
+    refreshBetsInt: null,
   },
   mutations: {
     setBets(state, { bets }) {
@@ -39,19 +40,25 @@ export default {
         key,
       }})
     },
-    async updateBets({ getters }, key) {
+    async refreshBets({ getters, state }, key) {
       const { rpc } = getters.eos;
-      let { rows:bets } = await rpc.get_table_rows({code: CONTRACT_OWNER, scope: CONTRACT_OWNER, table: 'bets'})
-      this.commit('setBets', { bets })
-    },
-    refreshGames({ dispatch, getters, state }) {
-      const { rpc } = getters.eos;
-      if (!state.refreshGamesInt) {
-        state.refreshGamesInt = setInterval(async () => {
-          let { rows:games } = await rpc.get_table_rows({code: CONTRACT_OWNER, scope: CONTRACT_OWNER, table: 'games'})
-          this.commit('setGames', { games })
-        }, REFRESH_GAMES_INT_IN_SECONDS * 1000);
+      if (state.refreshBetsInt) {
+        clearInterval(state.refreshBetsInt);
       }
+      state.refreshBetsInt = setInterval(async () => {
+        let { rows:bets } = await rpc.get_table_rows({code: CONTRACT_OWNER, scope: CONTRACT_OWNER, table: 'bets'})
+        this.commit('setBets', { bets })
+      }, REFRESH_INT_IN_SECONDS * 1000);
+    },
+    refreshGames({ getters, state }) {
+      const { rpc } = getters.eos;
+      if (state.refreshGamesInt) {
+        clearInterval(state.refreshGamesInt);
+      }
+      state.refreshGamesInt = setInterval(async () => {
+        let { rows:games } = await rpc.get_table_rows({code: CONTRACT_OWNER, scope: CONTRACT_OWNER, table: 'games'})
+        this.commit('setGames', { games })
+      }, REFRESH_INT_IN_SECONDS * 1000);
     }
   }
 }
