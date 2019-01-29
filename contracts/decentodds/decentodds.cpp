@@ -199,6 +199,8 @@ void decentodds::blowupgame(uint64_t key) {
     if (itr != _games.end()) {
         _games.erase(itr);
     }
+
+    // TODO: Delete all bets associated with game
 };
 
 EOSIO_DISPATCH( decentodds, (version)(creategame)(deletegame)(acceptbet)(bet)(unbet)(reveal)(askpayout)(blowupgame))

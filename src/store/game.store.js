@@ -20,10 +20,21 @@ export default {
     }
   },
   actions: {
+    acceptbet({ dispatch }, key) {
+      dispatch('transact', { name: 'acceptbet', data: {
+        key
+      }})
+    },
     async addGame({ dispatch }, game) {
       dispatch('transact', { name: 'creategame', data: {
         creator: game.creator,
         hash: ecc.sha256(game.content)
+      }})
+    },
+    askpayout({ dispatch }, key) {
+      dispatch('transact', { name: 'askpayout', data: {
+        key,
+        payout: '1 EOS'
       }})
     },
     bet({ dispatch }, key) {
@@ -35,8 +46,8 @@ export default {
         deposit: '1 EOS'
       }})
     },
-    unbet({ dispatch }, key) {
-      dispatch('transact', { name: 'unbet', data: {
+    blowupgame({ dispatch }, key) {
+      dispatch('transact', { name: 'blowupgame', data: {
         key
       }})
     },
@@ -64,6 +75,17 @@ export default {
         let { rows:games } = await rpc.get_table_rows({code: CONTRACT_OWNER, scope: CONTRACT_OWNER, table: 'games'})
         this.commit('setGames', { games })
       }, REFRESH_INT_IN_SECONDS * 1000);
-    }
+    },
+    reveal({ dispatch }, key) {
+      dispatch('transact', { name: 'reveal', data: {
+        key,
+        secret: ecc.sha256('something')
+      }})
+    },
+    unbet({ dispatch }, key) {
+      dispatch('transact', { name: 'unbet', data: {
+        key
+      }})
+    },
   }
 }

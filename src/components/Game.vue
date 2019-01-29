@@ -2,6 +2,7 @@
   <div class="game">
     <h4>{{ game }}</h4>
     <button @click="deleteGame(game.key)">Delete</button>
+    <button @click="blowupgame(game.key)">Blowup</button>
     <br />
     <button @click="bet(game.key)">Bet</button>
     <Bets />
@@ -31,7 +32,11 @@
       bet(key) {
         this.$store.dispatch('bet', key)
       },
-      deleteGame(key) {
+      blowupgame(key) {
+        this.$store.dispatch('blowupgame', key)
+        this.$router.push({ name: 'root' })
+      },
+      deletegame(key) {
         this.$store.dispatch('deletegame', key)
         this.$router.push({ name: 'root' })
       }
