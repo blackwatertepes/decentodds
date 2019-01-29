@@ -25,7 +25,7 @@
       }
     },
     mounted: function() {
-      const { id } = this.$route.params
+      //const { id } = this.$route.params
     },
     methods: {
       bet(key) {

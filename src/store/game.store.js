@@ -35,12 +35,17 @@ export default {
         deposit: '1 EOS'
       }})
     },
-    deletegame({ dispatch, state }, key) {
+    unbet({ dispatch }, key) {
+      dispatch('transact', { name: 'unbet', data: {
+        key
+      }})
+    },
+    deletegame({ dispatch }, key) {
       dispatch('transact', { name: 'deletegame', data: {
         key,
       }})
     },
-    async refreshBets({ getters, state }, key) {
+    async refreshBets({ getters, state }) {
       const { rpc } = getters.eos;
       if (state.refreshBetsInt) {
         clearInterval(state.refreshBetsInt);
