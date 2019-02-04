@@ -8,6 +8,7 @@ const EOS_RPC_URI = 'https://kylin.eoscanada.com'
 export default {
   state: {
     ipfs: null,
+    gameTypes: [{ id: 'hicard', name: "Hi Card" }, { id: 'texasholdem', name: "Texas Hold'em" }],
   },
   mutations: {
     setIpfs(state, { ipfs }) {

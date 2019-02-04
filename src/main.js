@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VueRouter from 'vue-router'
 import App from './App.vue'
+import GameTypes from './components/GameTypes.vue'
 import Games from './components/Games.vue'
 import Game from './components/Game.vue'
 import Store from './store'
@@ -13,8 +14,9 @@ Vue.config.productionTip = false
 
 const router = new VueRouter({
   routes: [
-    { path: '/', component: Games, name: 'root' },
-    { path: '/game/:id', component: Game, name: 'game' }
+    { path: '/', component: GameTypes, name: 'root' },
+    { path: '/:gametype', component: Games, name: 'gametype' },
+    { path: '/:gametype/:id', component: Game, name: 'game' }
   ]
 })
 
