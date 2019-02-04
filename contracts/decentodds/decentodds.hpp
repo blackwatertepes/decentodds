@@ -11,13 +11,13 @@ public:
 
     //using contract::contract;
 
-    decentodds( name receiver, name code, datastream<const char*> ds ): contract(receiver, code, ds),  _games(receiver, code.value), _bets(receiver, code.value), _players(receiver, code.value)
+    decentodds( name receiver, name code, datastream<const char*> ds ): contract(receiver, code, ds),  _gametypes(receiver, code.value), _games(receiver, code.value), _bets(receiver, code.value), _players(receiver, code.value)
     {}
 
     // [[eosio::action]] will tell eosio-cpp that the function is to be exposed as an action for user of the smart contract.
     [[eosio::action]] void version();
     // NOTE: Host methods...
-    [[eosio::action]] void creategame(name creator, checksum256 hash);
+    [[eosio::action]] void creategame(name creator, uint64_t gametypekey checksum256 hash);
     [[eosio::action]] void deletegame(uint64_t key);
     [[eosio::action]] void acceptbet(uint64_t key);
     // NOTE: Player methods...
@@ -27,12 +27,25 @@ public:
     [[eosio::action]] void askpayout(uint64_t key, asset payout);
     // NOTE: Admin methods...
     [[eosio::action]] void blowupgame(uint64_t key); // Fix unresolved games, by collecting all outstanding bets, and erasing the game...
+    [[eosio::action]] void creategametype(checksum256 hash);
+    [[eosio::action]] void deletegametype(uint64_t key);
 
     //private: -- not private so the cleos get table call can see the table data.
+
+    struct [[eosio::table]] gametypes
+    {
+        uint64_t    key;
+        checksum256 hash;
+        uint64_t    createdAt;
+    };
+    typedef multi_index<"gametypes"_n, gametypes> gametypestable;
+      //indexed_by<"hash"_n, const_mem_fun<games, name, &games::by_hash>>> gamestable;
+      //indexed_by<"creator"_n, const_mem_fun<games, name, &games::by_creator>>> gamestable;
 
     struct [[eosio::table]] games
     {
         uint64_t     key;
+        uint64_t     gametypekey;
         checksum256  hash;
         name         creator;
         uint32_t     round;
@@ -80,7 +93,8 @@ public:
     typedef multi_index<"players"_n, players> playerstable;
 
     //// local instances of the multi indexes
-    gamestable    _games;
-    betstable     _bets;
-    playerstable  _players;
+    gametypestable  _gametypes;
+    gamestable      _games;
+    betstable       _bets;
+    playerstable    _players;
 };

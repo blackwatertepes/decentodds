@@ -6,11 +6,12 @@ void decentodds::version() {
     print("DecentOdds version 0.0.0");
 };
 
-void decentodds::creategame(name creator, checksum256 hash) {
+void decentodds::creategame(name creator, uint64_t gametypekey, checksum256 hash) {
     require_auth(creator);
 
     _games.emplace(get_self(), [&](auto& p) {
         p.key = _games.available_primary_key();
+        p.gametypekey = gametypekey;
         p.hash = hash;
         p.creator = creator;
         p.round = 0;
@@ -203,4 +204,23 @@ void decentodds::blowupgame(uint64_t key) {
     // TODO: Delete all bets associated with game
 };
 
-EOSIO_DISPATCH( decentodds, (version)(creategame)(deletegame)(acceptbet)(bet)(unbet)(reveal)(askpayout)(blowupgame))
+void decentodds::creategametype(checksum256 hash) {
+    require_auth(_self);
+
+    _games.emplace(get_self(), [&](auto& p) {
+        p.key = _games.available_primary_key();
+        p.hash = hash;
+        p.createdAt = current_time();
+    });
+};
+
+void decentodds::deletegametype(uint64_t key) {
+    require_auth(_self);
+
+    auto itr = _gametypes.find(key);
+    if (itr != _gametypes.end()) {
+        _gametypes.erase(itr);
+    }
+};
+
+EOSIO_DISPATCH( decentodds, (version)(creategame)(deletegame)(acceptbet)(bet)(unbet)(reveal)(askpayout)(blowupgame)(creategametype)(deletegametypes))
