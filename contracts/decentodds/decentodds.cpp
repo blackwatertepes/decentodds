@@ -7,6 +7,7 @@ void decentodds::version() {
 };
 
 void decentodds::creategame(name creator, checksum256 hash) {
+    require_auth(_self); // TODO: Open access, eventually
     require_auth(creator);
 
     _games.emplace(get_self(), [&](auto& p) {
@@ -19,6 +20,7 @@ void decentodds::creategame(name creator, checksum256 hash) {
 };
 
 void decentodds::deletegame(uint64_t key) {
+    require_auth(_self); // TODO: Open access, eventually
     // NOTE: Require auth from the game creator...
     for(auto& item : _games) {
     if (item.key == key) {
@@ -83,6 +85,7 @@ void decentodds::bet(checksum256 hash, uint64_t gamekey, name better, asset wage
 };
 
 void decentodds::unbet(uint64_t key) {
+    require_auth(_self); // TODO: Open access, eventually
     for(auto& item : _bets) {
         if (item.key == key) {
             // NOTE: Only the better can unbet
@@ -121,6 +124,7 @@ void decentodds::reveal(uint64_t key, checksum256 secret) {
 };
 
 void decentodds::acceptbet(uint64_t key) {
+    require_auth(_self); // TODO: Open access, eventually
     for(auto& bet : _bets) {
         if (bet.key == key) {
             // TODO: Only the game creator can accept the bet
@@ -143,6 +147,7 @@ void decentodds::acceptbet(uint64_t key) {
 };
 
 void decentodds::askpayout(uint64_t key, asset payout) {
+    require_auth(_self); // TODO: Open access, eventually
     for(auto& item : _bets) {
         if (item.key == key) {
             // NOTE: Only the better can ask for a payout
@@ -189,6 +194,20 @@ void decentodds::askpayout(uint64_t key, asset payout) {
     // TODO: Erase all bets
 };
 
+void decentodds::paybet(uint64_t key, asset amount) {
+    require_auth(_self);
+
+    auto itr = _bets.find(key);
+    if (itr == _bets.end()) {
+        print("No bet found!");
+        return; // No Bet Found!
+    } else {
+        _bets.erase(itr);
+    }
+
+    // TODO: Transfer funds for wager & deposit
+}
+
 void decentodds::blowupgame(uint64_t key) {
     // NOTE: Only the contract owner can blowup games...
     require_auth(_self);
@@ -203,4 +222,4 @@ void decentodds::blowupgame(uint64_t key) {
     // TODO: Delete all bets associated with game
 };
 
-EOSIO_DISPATCH( decentodds, (version)(creategame)(deletegame)(acceptbet)(bet)(unbet)(reveal)(askpayout)(blowupgame))
+EOSIO_DISPATCH( decentodds, (version)(creategame)(deletegame)(acceptbet)(bet)(unbet)(reveal)(askpayout)(paybet)(blowupgame))

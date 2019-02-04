@@ -24,8 +24,9 @@ public:
     [[eosio::action]] void bet(checksum256 hash, uint64_t gamekey, name better, asset wager, asset deposit);
     [[eosio::action]] void unbet(uint64_t key);
     [[eosio::action]] void reveal(uint64_t key, checksum256 secret);
-    [[eosio::action]] void askpayout(uint64_t key, asset payout);
+    [[eosio::action]] void askpayout(uint64_t key, asset payout); // TODO: Finish, once we have true p2p
     // NOTE: Admin methods...
+    [[eosio::action]] void paybet(uint64_t key, asset amount); // NOTE: Needed, until we have true p2p
     [[eosio::action]] void blowupgame(uint64_t key); // Fix unresolved games, by collecting all outstanding bets, and erasing the game...
 
     //private: -- not private so the cleos get table call can see the table data.
