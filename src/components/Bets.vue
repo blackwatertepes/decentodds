@@ -4,6 +4,7 @@
     <ul id="bets-list">
       <li v-for="(bet, idx) in bets" :key="idx">
         {{ bet }}
+        <button @click="paybet(bet.key)">Paybet</button>
         <button @click="unbet(bet.key)">Unbet</button>
         <button @click="acceptbet(bet.key)">Accept</button>
         <button @click="reveal(bet.key)">Reveal</button>
@@ -36,6 +37,9 @@
       unbet(key) {
         this.$store.dispatch('unbet', key)
       },
+      paybet(key) {
+        this.$store.dispatch('paybet', key)
+      }
     }
   }
 </script>

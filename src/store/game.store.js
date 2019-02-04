@@ -87,5 +87,11 @@ export default {
         key
       }})
     },
+    paybet({ dispatch }, key) {
+      dispatch('transact', { name: 'paybet', data: {
+        key,
+        amount: '1 EOS'
+      }})
+    },
   }
 }
