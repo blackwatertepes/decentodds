@@ -1,8 +1,8 @@
 //import Room from 'ipfs-pubsub-room'
 import ecc from 'eosjs-ecc';
+import { CONTRACT_OWNER } from '../../constants';
 
-const CONTRACT_OWNER = 'decentoddsaz'
-const REFRESH_INT_IN_SECONDS = 2
+const REFRESH_INT_IN_SECONDS = 2;
 
 export default {
   state: {
@@ -41,7 +41,7 @@ export default {
       dispatch('transact', { name: 'bet', data: {
         hash: ecc.sha256('asdf'),
         gamekey: key,
-        better: 'decentoddsaz',
+        better: 'decentoddsaa',
         wager: '1 EOS',
         deposit: '1 EOS'
       }})

@@ -1,9 +1,6 @@
 import { Api, JsonRpc } from 'eosjs';
 import JsSignatureProvider from 'eosjs/dist/eosjs-jssig';
-
-const CONTRACT_OWNER = 'decentoddsaz'
-const DEFAULT_PRIVATE_KEY = "5JGMvtstqP2SNrVBRhMCY269sP83T6xuFZgPAxf6JHFoJdJCFrE"
-const EOS_RPC_URI = 'https://kylin.eoscanada.com'
+import { CONTRACT_OWNER, PLAYER_A, CONTRACT_OWNER_PRIVATE_KEY, PLAYER_A_PRIVATE_KEY, EOS_RPC_URI } from '../../constants';
 
 export default {
   state: {
@@ -23,7 +20,7 @@ export default {
           account: CONTRACT_OWNER,
           name,
           authorization: [{
-            actor: CONTRACT_OWNER,
+            actor: PLAYER_A,
             permission: 'active',
           }],
           data
@@ -36,7 +33,7 @@ export default {
   },
   getters: {
     eos() {
-      const signatureProvider = new JsSignatureProvider([DEFAULT_PRIVATE_KEY])
+      const signatureProvider = new JsSignatureProvider([CONTRACT_OWNER_PRIVATE_KEY, PLAYER_A_PRIVATE_KEY])
       const rpc = new JsonRpc(EOS_RPC_URI)
       const api = new Api({ rpc, signatureProvider })
 
