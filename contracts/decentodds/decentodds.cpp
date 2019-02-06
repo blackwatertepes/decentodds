@@ -85,7 +85,6 @@ void decentodds::bet(checksum256 hash, uint64_t gamekey, name better, asset wage
 };
 
 void decentodds::unbet(uint64_t key) {
-    require_auth(_self); // TODO: Open access, eventually
     for(auto& item : _bets) {
         if (item.key == key) {
             // NOTE: Only the better can unbet
@@ -147,7 +146,6 @@ void decentodds::acceptbet(uint64_t key) {
 };
 
 void decentodds::askpayout(uint64_t key, asset payout) {
-    require_auth(_self); // TODO: Open access, eventually
     for(auto& item : _bets) {
         if (item.key == key) {
             // NOTE: Only the better can ask for a payout
