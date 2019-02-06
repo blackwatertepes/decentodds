@@ -23,7 +23,7 @@ public:
     // NOTE: Player methods...
     [[eosio::action]] void bet(checksum256 hash, uint64_t gamekey, name better, asset wager, asset deposit);
     [[eosio::action]] void unbet(uint64_t key);
-    [[eosio::action]] void reveal(uint64_t key, checksum256 secret);
+    [[eosio::action]] void reveal(uint64_t key, uint64_t secret);
     [[eosio::action]] void askpayout(uint64_t key, asset payout); // TODO: Finish, once we have true p2p
     // NOTE: Admin methods...
     [[eosio::action]] void paybet(uint64_t key, asset amount); // NOTE: Needed, until we have true p2p
@@ -57,7 +57,7 @@ public:
         asset         deposit;
         bool          accepted;
         asset         requestedPayout;
-        checksum256   secret;
+        uint64_t      secret;
         uint64_t      createdAt;
 
         uint64_t primary_key() const { return key; }

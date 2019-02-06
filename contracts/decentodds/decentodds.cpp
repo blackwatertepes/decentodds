@@ -107,7 +107,7 @@ void decentodds::unbet(uint64_t key) {
     }
 };
 
-void decentodds::reveal(uint64_t key, checksum256 secret) {
+void decentodds::reveal(uint64_t key, uint64_t secret) {
     for(auto& item : _bets) {
         if (item.key == key) {
             // NOTE: Only the better can reveal
