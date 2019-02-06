@@ -1,12 +1,17 @@
 const dotenv = require('dotenv').config();
 const { api } = require('./base');
 
-const { ACTOR } = process.env;
+const { CONTRACT_OWNER } = process.env;
+
+if (process.argv.length < 4) {
+  console.log("Required Args: actor, data.key")
+  process.exit()
+}
 
 (async () => {
   const result = await api.transact({
     actions: [{
-      account: ACTOR,
+      account: CONTRACT_OWNER,
       name: 'unbet',
       authorization: [{
         actor: process.argv[2],

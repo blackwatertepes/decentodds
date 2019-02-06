@@ -2,7 +2,12 @@ const dotenv = require('dotenv').config();
 const { api } = require('./base');
 const ecc = require('eosjs-ecc');
 
-const { ACTOR } = process.env;
+const { CONTRACT_OWNER } = process.env;
+
+if (process.argv.length < 5) {
+  console.log("Required Args: actor/data.better, data.hash, data.gamekey")
+  process.exit()
+}
 
 const hash = ecc.sha256(process.argv[3]);
 console.log("Saving Data as Hash:", hash);
@@ -10,7 +15,7 @@ console.log("Saving Data as Hash:", hash);
 (async () => {
   const result = await api.transact({
     actions: [{
-      account: ACTOR,
+      account: CONTRACT_OWNER,
       name: 'bet',
       authorization: [{
         actor: process.argv[2],
