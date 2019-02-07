@@ -2,7 +2,7 @@
 import ecc from 'eosjs-ecc';
 import { CONTRACT_OWNER } from '../../constants';
 
-const REFRESH_INT_IN_SECONDS = 2;
+const REFRESH_INT_IN_SECONDS = 5;
 
 export default {
   state: {
@@ -10,6 +10,7 @@ export default {
     games: [],
     refreshGamesInt: null,
     refreshBetsInt: null,
+    random: 0,
   },
   mutations: {
     setBets(state, { bets }) {
@@ -17,6 +18,9 @@ export default {
     },
     setGames(state, { games }) {
       state.games = games
+    },
+    setRandom(state, { random }) {
+      state.random = random
     }
   },
   actions: {
@@ -38,12 +42,17 @@ export default {
       }})
     },
     bet({ dispatch }, key) {
+      //const random = Math.abs(Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) ^ new Date().getMilliseconds())
+      const random = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+      const better = 'decentoddsaa';
+      console.log("Random:", random);
+      this.commit('setRandom', { random });
       dispatch('transact', { name: 'bet', data: {
-        hash: ecc.sha256('asdf'),
+        hash: ecc.sha256(`${random}:${better}`),
         gamekey: key,
-        better: 'decentoddsaa',
+        better: better,
         wager: '1 EOS',
-        deposit: '1 EOS'
+        deposit: '0 EOS'
       }})
     },
     blowupgame({ dispatch }, key) {
@@ -76,10 +85,10 @@ export default {
         this.commit('setGames', { games })
       }, REFRESH_INT_IN_SECONDS * 1000);
     },
-    reveal({ dispatch }, key) {
+    reveal({ dispatch, state }, key) {
       dispatch('transact', { name: 'reveal', data: {
         key,
-        secret: ecc.sha256('something')
+        secret: `${state.random}`
       }})
     },
     unbet({ dispatch }, key) {

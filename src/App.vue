@@ -2,7 +2,6 @@
   <div id="app">
     <router-link :to="{ name: 'root' }">Home</router-link>
     <router-view></router-view>
-    <span>{{ random }}</span>
     <GameTable></GameTable>
   </div>
 </template>
@@ -19,7 +18,6 @@
     computed: {
       privateKey() { return this.$store.state.privateKey },
       publicKey() { return this.$store.getters.publicKey },
-      random() { return Math.random() * Number.MAX_SAFE_INTEGER ^ ((new Date()).getMilliseconds() / 1000 * Number.MAX_SAFE_INTEGER) }
     },
     mounted: function() {
       console.log("App Mounted!")
