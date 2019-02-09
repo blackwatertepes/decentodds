@@ -82,18 +82,23 @@ void decentodds::bet(checksum256 hash, uint64_t gamekey, name better, asset wage
     // TODO: Transfer funds for wager & deposit
 
     // NOTE: Otherwise, create new bet...
-    _bets.emplace(get_self(), [&](auto& p) {
-        p.key = _bets.available_primary_key();
-        p.hash = hash;
-        p.gamekey = gamekey;
-        p.better = better;
-        p.wager = wager;
-        p.deposit = deposit;
-        p.accepted = 0;
-        //p.requestedPayout = 0;
-        //p.secret;
-        p.createdAt = current_time();
-    });
+    for(auto& game : _games) {
+        if (game.key == gamekey) {
+            _bets.emplace(get_self(), [&](auto& p) {
+                p.key = _bets.available_primary_key();
+                p.hash = hash;
+                p.gamekey = gamekey;
+                p.round = game.round;
+                p.better = better;
+                p.wager = wager;
+                p.deposit = deposit;
+                p.accepted = 0;
+                //p.requestedPayout = 0;
+                //p.secret;
+                p.createdAt = current_time();
+            });
+        }
+    }
 };
 
 void decentodds::unbet(uint64_t key) {

@@ -54,6 +54,7 @@ public:
         checksum256   hash;
         name          better;
         uint64_t      gamekey;
+        uint32_t      round;
         asset         wager;
         asset         deposit;
         bool          accepted;
