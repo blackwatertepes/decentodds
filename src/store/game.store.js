@@ -1,6 +1,7 @@
 //import Room from 'ipfs-pubsub-room'
 import ecc from 'eosjs-ecc';
 import { CONTRACT_OWNER } from '../../constants';
+import { getRandom } from '../helpers/random';
 
 const REFRESH_INT_IN_SECONDS = 5;
 
@@ -43,7 +44,9 @@ export default {
     },
     bet({ dispatch }, key) {
       //const random = Math.abs(Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) ^ new Date().getMilliseconds())
-      const random = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+      // TODO: Share methods with the "Backend"
+      // TODO: Save random in local storage
+      const random = getRandom();
       const better = 'decentoddsaa';
       console.log("Random:", random);
       this.commit('setRandom', { random });

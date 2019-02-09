@@ -1,45 +1,13 @@
 const dotenv = require('dotenv').config()
-const { api, eosjs, rpc } = require('../base')
+const { api, rpc } = require('./src/helpers/eos')
 const ecc = require('eosjs-ecc')
+const { getWinningCard } = require('./src/games/hi-low')
+const { getCardAtPos } = require('./src/helpers/cards')
+const { getRandom } = require('./src/helpers/random')
 
 const { CONTRACT_OWNER } = process.env
 const GAMEKEY = 0
 const secrets = {} // TODO: Save sercets to disk
-
-function getRandom() {
-  // INFO: The maximum number of cards that can be drawn randomly from MAX_SAFE_INTEGER is 8 (ie, 52**8)
-  // TODO: Account for xor'ing number into a number larger than MAX_SAFE_INTEGER
-  const min = 52**8
-  const max = Number.MAX_SAFE_INTEGER
-  const range = max - min
-  const rand = Math.random() * range
-  const normalized_random = rand + min
-  return Math.floor(normalized_random)
-}
-
-function getAssetAmount(asset) {
-  return parseFloat(asset.split(' ')[0])
-}
-
-function getCardAtPos(position) {
-  const SUITS = ['spades', 'heart', 'club', 'diamond']
-  const val = Math.min(position % 13 + 1, 10) // Face cards are still worth 10
-  const num = position % 13 + 1 // Help determine face card
-  const suit = [Math.floor(position / 13)]
-  return { num, suit, val }
-}
-
-function getWinningCard(card_a, card_b) {
-  // Hi Card
-  // INFO: Highest number wins
-  if (card_a.val == card_b.val) {
-    return null
-  } else if (card_a.val > card_b.val) {
-    return card_a
-  } else {
-    return card_b
-  }
-}
 
 async function fetchBets() {
   const bets = await rpc.get_table_rows({
@@ -54,6 +22,19 @@ async function bet(bet) {
   const { wager, key } = bet
   const random = getRandom()
   secrets[key] = random
+  // NOTE: Accept the open bet...
+  const action_accept = {
+    account: CONTRACT_OWNER,
+    name: 'acceptbet',
+    authorization: [{
+      actor: CONTRACT_OWNER,
+      permission: 'active',
+    }],
+    data: {
+      key,
+    }
+  }
+  // NOTE: Place our bet...
   const action_bet = {
     account: CONTRACT_OWNER,
     name: 'bet',
@@ -69,20 +50,20 @@ async function bet(bet) {
       deposit: '0 EOS'
     }
   }
-  // NOTE: Accept the open bet...
-  const action_accept = {
+  // NOTE: Advance the round...
+  const action_advance = {
     account: CONTRACT_OWNER,
-    name: 'acceptbet',
+    name: 'advanceround',
     authorization: [{
       actor: CONTRACT_OWNER,
       permission: 'active',
     }],
     data: {
-      key,
+      GAMEKEY,
     }
   }
   const result = await api.transact({
-    actions: [action_accept, action_bet]
+    actions: [action_accept, action_bet, action_advance]
   }, {
     blocksBehind: 3,
     expireSeconds: 30,
@@ -91,12 +72,12 @@ async function bet(bet) {
 
 async function pay(their_bet) {
   // TODO: Fetch our bet
-  // TODO: Build another level of storage (games/tables/pots/etc), there should be away to associate bets, and have multiple sets of bets on the same game
+  // TODO: Build another level of storage (games/tables/pots/etc)?
   const { key, secret:their_secret, wager } = their_bet
   const our_secret = secrets[key]
   const shared_secret = their_secret ^ our_secret
   const their_card_pos = shared_secret % 52
-  const our_card_pos = Math.floor(our_card / (52**1) % 52)
+  const our_card_pos = Math.floor(shared_secret / (52**1) % 52)
   const their_card = getCardAtPos(their_card_pos)
   const our_card = getCardAtPos(our_card_pos)
   const winning_card = getWinningCard(their_card, our_card)
@@ -153,14 +134,14 @@ setInterval(async () => {
       && wageredAmount < 10 // Too risky
       && !secrets[key]) {
       console.log("Open Bet:", bet)
-      await bet(bet);
+      //await bet(bet);
     }
 
     // Check for revealved bets...
     if (accepted == 1
       && secrets[key]) {
       console.log("Revealed Bet:", bet)
-      await pay(bet)
+      //await pay(bet)
     }
   }
 }, 1000)

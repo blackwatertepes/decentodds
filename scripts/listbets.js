@@ -1,5 +1,4 @@
-const dotenv = require('dotenv').config();
-const { api, eosjs, rpc } = require('./base');
+const { rpc } = require('../src/helpers/eos');
 
 (async () => {
   const bets = await rpc.get_table_rows({

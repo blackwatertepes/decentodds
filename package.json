@@ -5,12 +5,14 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "server": "node server"
   },
   "dependencies": {
     "deck-of-cards": "^0.1.8",
     "eosjs": "^20.0.0-beta3",
     "eosjs-ecc": "^4.0.4",
+    "esm": "^3.2.4",
     "ipfs": "^0.34.4",
     "ipfs-pubsub-room": "^1.4.0",
     "vue": "^2.5.17",
