@@ -19,6 +19,18 @@ void decentodds::creategame(name creator, checksum256 hash) {
     });
 };
 
+void decentodds::advanceround(uint64_t key) {
+    require_auth(_self); // TODO: Open access, eventually
+    // TODO: require_auth(creator)
+
+    auto itr = _games.find(key);
+    if (itr != _games.end()) {
+        _games.modify(itr, get_self(), [&](auto& p) {
+            p.round = p.round + 1;
+        });
+    }
+}
+
 void decentodds::deletegame(uint64_t key) {
     require_auth(_self); // TODO: Open access, eventually
     // NOTE: Require auth from the game creator...
@@ -220,4 +232,4 @@ void decentodds::blowupgame(uint64_t key) {
     // TODO: Delete all bets associated with game
 };
 
-EOSIO_DISPATCH( decentodds, (version)(creategame)(deletegame)(acceptbet)(bet)(unbet)(reveal)(askpayout)(paybet)(blowupgame))
+EOSIO_DISPATCH( decentodds, (version)(creategame)(advanceround)(deletegame)(acceptbet)(bet)(unbet)(reveal)(askpayout)(paybet)(blowupgame))

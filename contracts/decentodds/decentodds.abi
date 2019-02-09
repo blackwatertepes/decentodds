@@ -1,9 +1,19 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Tue Feb  5 23:15:07 2019",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Fri Feb  8 21:29:48 2019",
     "version": "eosio::abi/1.1",
     "structs": [
         {
             "name": "acceptbet",
+            "base": "",
+            "fields": [
+                {
+                    "name": "key",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "advanceround",
             "base": "",
             "fields": [
                 {
@@ -229,6 +239,11 @@
         {
             "name": "acceptbet",
             "type": "acceptbet",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "advanceround",
+            "type": "advanceround",
             "ricardian_contract": ""
         },
         {

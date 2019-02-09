@@ -18,6 +18,7 @@ public:
     [[eosio::action]] void version();
     // NOTE: Host methods...
     [[eosio::action]] void creategame(name creator, checksum256 hash);
+    [[eosio::action]] void advanceround(uint64_t key);
     [[eosio::action]] void deletegame(uint64_t key);
     [[eosio::action]] void acceptbet(uint64_t key);
     // NOTE: Player methods...
