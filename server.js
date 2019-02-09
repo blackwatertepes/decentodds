@@ -1,5 +1,5 @@
 const dotenv = require('dotenv').config()
-const { api, rpc } = require('./src/helpers/eos')
+const { api, rpc, getAssetAmount } = require('./src/helpers/eos')
 const ecc = require('eosjs-ecc')
 const { getWinningCard } = require('./src/games/hi-low')
 const { getCardAtPos } = require('./src/helpers/cards')
@@ -18,7 +18,7 @@ async function fetchBets() {
   return bets.rows
 }
 
-async function bet(bet) {
+async function placebet(bet) {
   const { wager, key } = bet
   const random = getRandom()
   secrets[key] = random
@@ -59,7 +59,7 @@ async function bet(bet) {
       permission: 'active',
     }],
     data: {
-      GAMEKEY,
+      key: GAMEKEY,
     }
   }
   const result = await api.transact({
@@ -134,7 +134,7 @@ setInterval(async () => {
       && wageredAmount < 10 // Too risky
       && !secrets[key]) {
       console.log("Open Bet:", bet)
-      //await bet(bet);
+      await placebet(bet);
     }
 
     // Check for revealved bets...
