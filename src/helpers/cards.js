@@ -1,7 +1,10 @@
 export function getCardAtPos(position) {
   const SUITS = ['spade', 'heart', 'club', 'diamond']
-  const val = Math.min(position % 13 + 1, 10) // Face cards are still worth 10
-  const num = position % 13 + 1 // Help determine face card
   const suit = SUITS[Math.floor(position % 52 / 13)]
-  return { num, suit, val }
+  const num = position % 13 + 1 // 1 - 13
+  const value = Math.min(position % 13 + 1, 10) // [1,2..9,10,10,10,10]
+  const values = [value];
+  if (value == 1) { values.push(11) } // Aces can be 1 || 11
+  const rank = (num == 1) ? 14 : num;
+  return { num, rank, suit, values }
 }
