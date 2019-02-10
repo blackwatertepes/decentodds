@@ -1,10 +1,6 @@
-const { rpc } = require('../src/helpers/eos');
+const { getbets } = require('../src/helpers/actions');
 
 (async () => {
-  const bets = await rpc.get_table_rows({
-    code: 'decentoddsaz',
-    scope: 'decentoddsaz',
-    table: 'bets',
-  });
+  const bets = await getbets();
   console.log(bets.rows);
 })();

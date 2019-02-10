@@ -1,28 +1,8 @@
-const dotenv = require('dotenv').config();
-const { api } = require('../src/helpers/eos');
+const { deletegame } = require('../src/helpers/actions');
 
-const { CONTRACT_OWNER } = process.env;
-
-if (process.argv.length < 4) {
-  console.log("Required Args: actor, data.key")
+if (process.argv.length < 3) {
+  console.log("Required Args: data.key")
   process.exit()
 }
 
-(async () => {
-  const result = await api.transact({
-    actions: [{
-      account: CONTRACT_OWNER,
-      name: 'deletegame',
-      authorization: [{
-        actor: process.argv[2],
-        permission: 'active',
-      }],
-      data: {
-        key: process.argv[3],
-      },
-    }]
-  }, {
-    blocksBehind: 3,
-    expireSeconds: 30,
-  });
-})();
+deletegame(process.argv[2]);

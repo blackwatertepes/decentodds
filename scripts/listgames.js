@@ -1,7 +1,6 @@
-const dotenv = require('dotenv').config();
-const { api, eosjs, rpc } = require('../src/helpers/eos');
+const { getgames } = require('../src/helpers/actions');
 
 (async () => {
-  const game = await rpc.get_table_rows({code: 'decentoddsaz', scope: 'decentoddsaz', table: 'games'});
-  console.log(game.rows);
+  const games = await getgames();
+  console.log(games.rows);
 })();
