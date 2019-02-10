@@ -8,3 +8,7 @@ export function getRandom() {
   const normalized_random = rand + min
   return Math.floor(normalized_random)
 }
+
+export function xor(nums) {
+  return nums.reduce((acc, cur) => { return acc ^ cur })
+}

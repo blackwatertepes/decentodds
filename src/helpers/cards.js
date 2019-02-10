@@ -8,3 +8,12 @@ export function getCardAtPos(position) {
   const rank = (num == 1) ? 14 : num;
   return { num, rank, suit, values }
 }
+
+export function getCardPositionForPlayer(rand, player = 0) {
+  return Math.floor(rand / (52**player) % 52);
+}
+
+export function getCardForPlayer(rand, player = 0) {
+  const position = getCardPositionForPlayer(rand, player);
+  return getCardAtPos(position);
+}
