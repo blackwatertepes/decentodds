@@ -1,4 +1,4 @@
-const { getCardAtPos } = require('../src/helpers/cards');
+const { getCardAtPos, getCardPositionForPlayer, getCardForPlayer } = require('../src/helpers/cards');
 
 describe('cards', function() {
   describe('getCardAtPos', function() {
@@ -18,6 +18,20 @@ describe('cards', function() {
     it('returns correct card for large values', () => {
       expect(getCardAtPos(52**8)).toEqual({ num: 1, rank: 14, suit: 'spade', values: [1,11] });
       expect(getCardAtPos(52**9)).toEqual({ num: 1, rank: 14, suit: 'spade', values: [1,11] });
+    });
+  });
+
+  describe('getCardPositionForPlayer', () => {
+    it('returns', () => {
+      expect(getCardPositionForPlayer(123, 0)).toEqual(19);
+      expect(getCardPositionForPlayer(123, 1)).toEqual(2);
+    });
+  });
+
+  describe('getCardForPlayer', () => {
+    it('returns', () => {
+      expect(getCardForPlayer(123, 0)).toEqual({ num: 7, rank: 7, suit: 'heart', values: [7] });
+      expect(getCardForPlayer(123, 1)).toEqual({ num: 3, rank: 3, suit: 'spade', values: [3] });
     });
   });
 });

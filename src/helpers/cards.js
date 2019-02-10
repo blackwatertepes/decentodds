@@ -10,7 +10,7 @@ export function getCardAtPos(position) {
 }
 
 export function getCardPositionForPlayer(rand, player = 0) {
-  return Math.floor(rand / (52**player) % 52);
+  return Math.floor(rand / (52**player)) % 52;
 }
 
 export function getCardForPlayer(rand, player = 0) {
