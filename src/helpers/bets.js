@@ -7,9 +7,9 @@ async function fetchBets() {
   return bets.rows;
 }
 
-function myBets(bets) {
+function myBets(bets, name) {
   return bets.filter((bet) => {
-    return bet.better == PLAYER_NAME;
+    return bet.better == name;
   });
 }
 
@@ -26,7 +26,7 @@ function roundBets(bets, round) {
 }
 
 function potBets(bets, round) {
-  return acceptedBets(roundBets(bets));
+  return acceptedBets(roundBets(bets, round));
 }
 
 function revealedBets(bets) {
