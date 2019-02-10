@@ -45,6 +45,13 @@ function getgames() {
   return rpc.get_table_rows({ code: CONTRACT_OWNER, scope: CONTRACT_OWNER, table: 'games' });
 }
 
+function advanceround(key) {
+  const action = buildOwnerAction('advanceround', {
+    key,
+  });
+  return api.transact({ actions: [action] }, buildOptions());
+}
+
 function deletegame(key) {
   const action = buildOwnerAction('deletegame', { key });
   return api.transact({ actions: [action] }, buildOptions());
@@ -80,12 +87,30 @@ function unbet(actor, key) {
   return api.transact({ actions: [action] }, buildOptions());
 }
 
+function acceptbet(key) {
+  const action = buildOwnerAction('acceptbet', {
+    key,
+  });
+  return api.transact({ actions: [action] }, buildOptions());
+}
+
+function reveal(actor, key, secret) {
+  const action = buildAction('reveal', { actor, permission: 'active' }, {
+    key,
+    secret,
+  });
+  return api.transact({ actions: [action] }, buildOptions());
+}
+
 module.exports = {
   creategame,
   getgames,
+  advanceround,
   deletegame,
   bet,
   getbets,
+  acceptbet,
+  reveal,
   paybet,
   unbet
 }
