@@ -1,5 +1,5 @@
 const dotenv = require('dotenv').config();
-const { api } = require('./base');
+const { api } = require('../src/helpers/eos');
 const ecc = require('eosjs-ecc');
 
 const { CONTRACT_OWNER } = process.env;
