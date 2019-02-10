@@ -46,12 +46,6 @@ function hashSecret(secret, playerName) {
   return ecc.sha256(`${secret}:${playerName}`);
 }
 
-function getRandomWithHash(playerName) {
-  const secret = getRandom();
-  const hash = hashSecret(secret, playerName);
-  return { secret, hash };
-}
-
 module.exports = {
   fetchBets,
   myBets,
@@ -61,5 +55,4 @@ module.exports = {
   revealedBets,
   refreshBet,
   hashSecret,
-  getRandomWithHash,
 }

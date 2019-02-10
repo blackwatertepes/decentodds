@@ -26,15 +26,19 @@ async function pay(their_bet) {
   // TODO: Pay the winning bet 2X the wager
 }
 
-setInterval(async () => {
-  const bets = await fetchBets()
-  for (let bet of bets) {
-    const { accepted, key, wager } = bet
-    // Check for revealved bets...
-    if (accepted == 1
-      && secrets[key]) {
-      console.log("Revealed Bet:", bet)
-      //await pay(bet)
+export function runAdmin() {
+  setInterval(async () => {
+    console.log("Admin thinking...");
+    return;
+    const bets = await fetchBets()
+    for (let bet of bets) {
+      const { accepted, key, wager } = bet
+      // Check for revealved bets...
+      if (accepted == 1
+        && secrets[key]) {
+        console.log("Revealed Bet:", bet)
+        //await pay(bet)
+      }
     }
-  }
-}, 1000)
+  }, 400)
+}
