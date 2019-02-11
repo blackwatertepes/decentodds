@@ -4,69 +4,74 @@ const {
   fetchBets,
   myBets,
   acceptedBets,
+  unacceptedBets,
   roundBets,
   potBets,
   revealedBets,
+  unrevealedBets,
   refreshBet,
   hashSecret } = require('../src/helpers/bets');
+const { bet:placebet, reveal } = require('../src/helpers/actions');
 
-const { CONTRACT_OWNER:PLAYER_NAME } = process.env
-const GAMEKEY = 0
-const WAGER = '1.000';
+const { PLAYER_A:PLAYER_NAME } = process.env; // The account name of the player
+const GAMEKEY = 0; // The Game to play
+const WAGER = '1.000'; // The amount to wager on each bet
 
 export function runPlayer() {
-  let openbet;
-  let secret;
+  let secrets = []; // TODO: Store on disk
 
   setInterval(async () => {
-    console.log(`Player ${PLAYER_NAME} thinking...`);
-    return;
+    //console.log(`Player ${PLAYER_NAME} thinking...`);
     let bets = await fetchBets();
+    let mybets = myBets(bets, PLAYER_NAME);
+    let myacceptedbets = acceptedBets(mybets);
+    let myrevealedbets = revealedBets(myacceptedbets);
+
     // Place a bet...
-    if (!opebet) {
-      openbet = {};
-      secret = getRandom();
+    if (!mybets.length > 0) {
+      const secret = getRandom();
+      secrets.unshift(secret);
       const hash = hashSecret(secret, PLAYER_NAME);
-      console.log("Placing bet...");
-      await bet(PLAYER_NAME, hash, GAMEKEY, WAGER);
-      let myBets = myBets(bets);
-      openbet = bets[myBets.length - 1];
-      console.log("Bet placed:", openbet);
+      console.log("Player: Placing bet...");
+      await placebet(PLAYER_NAME, hash, GAMEKEY, WAGER);
+      console.log("Player: Bet placed.");
     }
 
     // Reveal a bet...
-    // Wait for payout...
-    if (openbet) {
-      openbet = await refreshBet(openbet);
-      if (openbet) {
-        if (openbet.accepted) {
-          if (!opebet.secret) {
-            console.log("Revealing bet...");
-            await reveal(PLAYER_NAME, openbet.key, secret);
-            console.log("Bet revealed:", secret);
-          }
-          // Find other bets in the pot...
-          let potbets = potBets(bets, openbet.round);
-          if (potbets.length > 1) {
-            console.log("Bets in round:", potbets.length);
-            let revealed = revealedBets(potbets);
-            if (revealed.length == potbets.length) {
-              console.log("All bets revealed!");
-              // Check all secrets...
-              for (bet of potbets) {
-                let hash = hashSecret(bet.secret, bet.better);
-                if (hash !== bet.hash) {
-                  console.log("LIAR FOUND! Bet:", bet);
-                }
-              }
-              // Calculate cards...
-            }
-          }
+    if (myacceptedbets.length > 0) {
+      for (let bet of myacceptedbets) {
+        if (!bet.secret) {
+          const secret = secrets.find((num) => {
+            return hashSecret(num, PLAYER_NAME) == bet.hash;
+          })
+          console.log("Player: Revealing bet...");
+          await reveal(PLAYER_NAME, bet.key, secret);
+          console.log("Player: Bet revealed:", secret);
         }
-      } else {
-        openbet = null;
-        secret = null;
       }
     }
-  }, 600)
+
+    // Show outcome...
+    if (myrevealedbets.length > 0) {
+      for (let bet of myrevealedbets) {
+        const potbets = potBets(bets, bet.round);
+        const revealedpotbets = revealedBets(potbets);
+        if (potbets.length == revealedpotbets.length) {
+          console.log("Player: All bets revealed!");
+          // Check all secrets...
+          /*
+          for (bet of potbets) {
+            let hash = hashSecret(bet.secret, bet.better);
+            if (hash !== bet.hash) {
+              console.log("LIAR FOUND! Bet:", bet);
+            }
+          }
+          */
+          // Calculate cards...
+        } else {
+          console.log("Player: Revealed bets in round:", revealedpotbets.length, "of", potbets.length);
+        }
+      }
+    }
+  }, 8000)
 }

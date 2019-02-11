@@ -1,16 +1,27 @@
 const dotenv = require('dotenv').config()
-const { api, rpc, getAssetAmount } = require('../src/helpers/eos')
-const ecc = require('eosjs-ecc')
+const { getAssetAmount } = require('../src/helpers/eos')
 const { getWinningCard } = require('../src/games/hi-low')
 const { getCardAtPos } = require('../src/helpers/cards')
 const { xor } = require('../src/helpers/random')
+const {
+  fetchBets,
+  myBets,
+  acceptedBets,
+  unacceptedBets,
+  roundBets,
+  potBets,
+  revealedBets,
+  unrevealedBets,
+  refreshBet,
+  hashSecret } = require('../src/helpers/bets');
+const { acceptbet, advanceround } = require('../src/helpers/actions');
+const { fetchGames } = require('../src/helpers/games');
 
 const { CONTRACT_OWNER } = process.env
 const GAMEKEY = 0
 
-async function pay(their_bet) {
-  // TODO: Fetch our bet
-  // TODO: Build another level of storage (games/tables/pots/etc)?
+async function pay() {
+  // TODO...
   const { key, secret:their_secret, wager } = their_bet
   const our_secret = secrets[key]
   const shared_secret = xor([our_secret, their_secret])
@@ -28,17 +39,27 @@ async function pay(their_bet) {
 
 export function runAdmin() {
   setInterval(async () => {
-    console.log("Admin thinking...");
-    return;
-    const bets = await fetchBets()
-    for (let bet of bets) {
-      const { accepted, key, wager } = bet
-      // Check for revealved bets...
-      if (accepted == 1
-        && secrets[key]) {
-        console.log("Revealed Bet:", bet)
-        //await pay(bet)
+    //console.log("Admin thinking...");
+    const games = await fetchGames();
+    const game = games.find((game) => {
+      return game.key == GAMEKEY;
+    })
+
+    const bets = await fetchBets();
+    const unacceptedbets = unacceptedBets(bets);
+    const roundbets = unacceptedBets(unacceptedbets, game.round);
+
+    // Accept valid open bets...
+    if (roundbets.length > 1) {
+      // TODO: Validate bets (Make sure wall wagers are equal, etc)
+      console.log(`Accepting ${roundbets.length} open bets in round: ${game.round}...`);
+      for (let bet of roundbets) {
+        const { accepted, key, wager } = bet;
+        acceptbet(bet.key);
       }
+      console.log("Advancing round...");
+      await advanceround(game.key);
+      console.log("Round advanced");
     }
-  }, 400)
+  }, 500)
 }
