@@ -3,9 +3,11 @@ const { betFactory } = require('./factories');
 const {
   myBets,
   acceptedBets,
+  unacceptedBets,
   roundBets,
   potBets,
   revealedBets,
+  unrevealedBets,
   hashSecret,
  } = require('../src/helpers/bets');
 
@@ -34,6 +36,12 @@ describe('bets', function() {
     });
   });
 
+  describe('unacceptedBets', function() {
+    it('returns unaccepted bets', () => {
+      expect(unacceptedBets(bets)).toEqual([myOpenBet, otherOpenBet, myNextRoundBet]);
+    });
+  });
+
   describe('roundBets', function() {
     it('returns round bets', () => {
       expect(roundBets(bets, round)).toEqual([myOpenBet, myAcceptedBet, myRevealedBet, otherOpenBet]);
@@ -49,6 +57,12 @@ describe('bets', function() {
   describe('revealedBets', function() {
     it('returns revealed bets', () => {
       expect(revealedBets(bets)).toEqual([myRevealedBet]);
+    });
+  });
+
+  describe('unrevealedBets', function() {
+    it('returns unrevealed bets', () => {
+      expect(unrevealedBets(bets)).toEqual([myOpenBet, myAcceptedBet, otherOpenBet, myNextRoundBet]);
     });
   });
 

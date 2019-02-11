@@ -19,6 +19,12 @@ function acceptedBets(bets) {
   });
 }
 
+function unacceptedBets(bets) {
+  return bets.filter((bet) => {
+    return !bet.accepted;
+  })
+}
+
 function roundBets(bets, round) {
   return bets.filter((bet) => {
     return bet.round == round;
@@ -32,6 +38,12 @@ function potBets(bets, round) {
 function revealedBets(bets) {
   return bets.filter((bet) => {
     return bet.secret;
+  })
+}
+
+function unrevealedBets(bets) {
+  return bets.filter((bet) => {
+    return !bet.secret;
   })
 }
 
@@ -55,4 +67,6 @@ module.exports = {
   revealedBets,
   refreshBet,
   hashSecret,
+  unacceptedBets,
+  unrevealedBets,
 }
