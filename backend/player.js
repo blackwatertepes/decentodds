@@ -50,28 +50,5 @@ export function runPlayer() {
         }
       }
     }
-
-    // Show outcome...
-    if (myrevealedbets.length > 0) {
-      for (let bet of myrevealedbets) {
-        const potbets = potBets(bets, bet.round);
-        const revealedpotbets = revealedBets(potbets);
-        if (potbets.length == revealedpotbets.length) {
-          console.log("Player: All bets revealed!");
-          // Check all secrets...
-          /*
-          for (bet of potbets) {
-            let hash = hashSecret(bet.secret, bet.better);
-            if (hash !== bet.hash) {
-              console.log("LIAR FOUND! Bet:", bet);
-            }
-          }
-          */
-          // Calculate cards...
-        } else {
-          console.log("Player: Revealed bets in round:", revealedpotbets.length, "of", potbets.length);
-        }
-      }
-    }
   }, 8000)
 }
