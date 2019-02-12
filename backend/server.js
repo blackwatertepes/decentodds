@@ -1,8 +1,9 @@
 const dotenv = require('dotenv').config()
 const { runBetter } = require('./better');
-const { runAdmin } = require('./contractadmin');
+const { runApprover } = require('./approver');
 const { runPlayer } = require('./player');
+// TODO: Finish & Import payer
 
-runAdmin();
+runApprover();
 runBetter();
 runPlayer();

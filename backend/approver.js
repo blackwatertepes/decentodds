@@ -37,7 +37,7 @@ async function pay() {
   // TODO: Pay the winning bet 2X the wager
 }
 
-export function runAdmin() {
+export function runApprover() {
   setInterval(async () => {
     //console.log("Admin thinking...");
     const games = await fetchGames();
