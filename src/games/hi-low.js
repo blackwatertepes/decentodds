@@ -1,11 +1,9 @@
-export function getWinningCard(card_a, card_b) {
-  // Hi Card
-  // INFO: Highest number wins
-  if (card_a.rank == card_b.rank) {
-    return null
-  } else if (card_a.rank > card_b.rank) {
-    return card_a
-  } else {
-    return card_b
+export function getWinningCard(cards) {
+  cards.sort((a, b) => {
+    return b.rank - a.rank;
+  });
+  if (cards.length > 1 && cards[0].rank == cards[1].rank) {
+    return null;
   }
+  return cards[0];
 }
