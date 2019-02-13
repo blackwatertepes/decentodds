@@ -3,6 +3,8 @@ const { getRandom } = require('../src/helpers/random');
 const { fetchBets, myBets, acceptedBets, unacceptedBets, roundBets, potBets, revealedBets, unrevealedBets,
   refreshBet, hashSecret } = require('../src/helpers/bets');
 const { bet:placebet, reveal } = require('../src/helpers/actions');
+const { getCards } = require('../src/helpers/players')
+const { getWinningCard } = require('../src/games/hi-low')
 
 const { PLAYER_A:PLAYER_NAME } = process.env; // The account name of the player
 const GAMEKEY = 0; // The Game to play
@@ -42,6 +44,10 @@ export function runPlayer() {
       console.log("Player: Secret revealed:", secret);
     }
 
-    // TODO: Show outcome of revealed bets
+    // Show game outcome...
+    const cards = getCards(bets)
+    console.log(cards);
+    const winningCard = getWinningCard(cards)
+    console.log("Winner Card:", winningCard)
   }, 8000)
 }

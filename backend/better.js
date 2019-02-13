@@ -2,8 +2,10 @@ const dotenv = require('dotenv').config()
 const { getAssetAmount } = require('../src/helpers/eos')
 const { getRandom } = require('../src/helpers/random');
 const { fetchBets, myBets, acceptedBets, unacceptedBets, roundBets, potBets, revealedBets, unrevealedBets,
-  refreshBet, hashSecret } = require('../src/helpers/bets');
+  refreshBet, hashSecret, validBet, xorBets } = require('../src/helpers/bets');
 const { bet:placebet, reveal } = require('../src/helpers/actions');
+const { getCards } = require('../src/helpers/players')
+const { getWinningCard } = require('../src/games/hi-low')
 
 const { PLAYER_B:PLAYER_NAME } = process.env
 const GAMEKEY = 0
@@ -47,6 +49,10 @@ export function runBetter() {
       console.log("Better: Secret revealed:", secret);
     }
 
-    // TODO: Show game outcome
+    // Show game outcome...
+    const cards = getCards(bets)
+    console.log(cards);
+    const winningCard = getWinningCard(cards)
+    console.log("Winner Card:", winningCard)
   }, 2000)
 }
