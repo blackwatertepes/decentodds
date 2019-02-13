@@ -17,26 +17,27 @@ const { bet:placebet, reveal } = require('../src/helpers/actions');
 const { PLAYER_B:PLAYER_NAME } = process.env
 const GAMEKEY = 0
 
-export function runBetter() {
-  const secrets = {} // TODO: Save sercets to disk
+const secrets = {} // TODO: Save sercets to disk
 
+export function runBetter() {
   setInterval(async () => {
     //console.log("Better thining...");
     let bets = await fetchBets();
+    let openbets = unacceptedBets(bets);
     let mybets = myBets(bets, PLAYER_NAME);
-    let myacceptedbets = acceptedBets(mybets);
-    let myrevealedbets = revealedBets(myacceptedbets);
+    let myacceptedbets = unrevealedBets(acceptedBets(mybets));
+    let myrevealedbets = revealedBets(mybets);
 
     // Check for open bets...
-    for (let bet of bets) {
+    for (let bet of openbets) {
       const { accepted, better, key, wager } = bet
       const wageredAmount = getAssetAmount(wager)
       const roundbets = roundBets(bets, bet.round);
-      if (accepted == 0
-        && wageredAmount > 0 // Not worth our time
+      if (wageredAmount > 0 // Not worth our time
         && wageredAmount < 10 // Too risky
-        && roundbets.length >= 1 // No one else has bet in this round
+        && roundbets.length == 1 // No one else has bet in this round
         && !secrets[bet.round]) { // I have not yet bet in this round
+          // TODO: Make sure the round is still active, on the game object
         //console.log("Open Bet:", bet)
         const secret = getRandom();
         secrets[bet.round] = secret;
@@ -48,15 +49,13 @@ export function runBetter() {
     }
 
     // Reveal a bet...
-    if (myacceptedbets.length > 0) {
-      for (let bet of myacceptedbets) {
-        if (!bet.secret) {
-          const secret = secrets[bet.round];
-          console.log("Better: Revealing bet...");
-          await reveal(PLAYER_NAME, bet.key, secret);
-          console.log("Better: Bet revealed:", secret);
-        }
-      }
+    for (let bet of myacceptedbets) {
+      const secret = secrets[bet.round];
+      console.log("Better: Revealing secret...");
+      await reveal(PLAYER_NAME, bet.key, secret);
+      console.log("Better: Secret revealed:", secret);
     }
+
+    // TODO: Show game outcome
   }, 2000)
 }
