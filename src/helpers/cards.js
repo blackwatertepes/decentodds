@@ -18,7 +18,6 @@ export function getCardForPlayer(rand, player = 0) {
   return getCardAtPos(position);
 }
 
-// TODO: Test
 export function getCardIndex(cards, card) {
   return cards.indexOf(card);
 }

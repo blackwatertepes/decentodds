@@ -1,4 +1,5 @@
-const { getCardAtPos, getCardPositionForPlayer, getCardForPlayer } = require('../src/helpers/cards');
+const { getCardAtPos, getCardPositionForPlayer, getCardForPlayer, getCardIndex } = require('../src/helpers/cards');
+const { cardFactory } = require('./factories');
 
 describe('cards', function() {
   describe('getCardAtPos', function() {
@@ -32,6 +33,19 @@ describe('cards', function() {
     it('returns', () => {
       expect(getCardForPlayer(123, 0)).toEqual({ num: 7, rank: 7, suit: 'heart', values: [7] });
       expect(getCardForPlayer(123, 1)).toEqual({ num: 3, rank: 3, suit: 'spade', values: [3] });
+    });
+  });
+
+  describe('getCardIndex', () => {
+    let two = cardFactory({ num: 2, values:[2], rank: 2 });
+    let four = cardFactory({ num: 4, values:[4], rank: 4 });
+    let six = cardFactory({ num: 6, values:[6], rank: 6 });
+    let cards = [two, four, six];
+
+    it('returns', () => {
+      expect(getCardIndex(cards, two)).toEqual(0);
+      expect(getCardIndex(cards, four)).toEqual(1);
+      expect(getCardIndex(cards, six)).toEqual(2);
     });
   });
 });
