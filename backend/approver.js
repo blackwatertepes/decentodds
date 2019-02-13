@@ -1,16 +1,7 @@
 const dotenv = require('dotenv').config()
 const { getAssetAmount } = require('../src/helpers/eos')
-const {
-  fetchBets,
-  myBets,
-  acceptedBets,
-  unacceptedBets,
-  roundBets,
-  potBets,
-  revealedBets,
-  unrevealedBets,
-  refreshBet,
-  hashSecret } = require('../src/helpers/bets');
+const { fetchBets, myBets, acceptedBets, unacceptedBets, roundBets, potBets, revealedBets, unrevealedBets,
+  refreshBet, hashSecret } = require('../src/helpers/bets');
 const { acceptbet, advanceround } = require('../src/helpers/actions');
 const { fetchGames } = require('../src/helpers/games');
 

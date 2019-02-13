@@ -1,16 +1,7 @@
 const dotenv = require('dotenv').config()
 const { getRandom } = require('../src/helpers/random');
-const {
-  fetchBets,
-  myBets,
-  acceptedBets,
-  unacceptedBets,
-  roundBets,
-  potBets,
-  revealedBets,
-  unrevealedBets,
-  refreshBet,
-  hashSecret } = require('../src/helpers/bets');
+const { fetchBets, myBets, acceptedBets, unacceptedBets, roundBets, potBets, revealedBets, unrevealedBets,
+  refreshBet, hashSecret } = require('../src/helpers/bets');
 const { bet:placebet, reveal } = require('../src/helpers/actions');
 
 const { PLAYER_A:PLAYER_NAME } = process.env; // The account name of the player
