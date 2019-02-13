@@ -1,9 +1,9 @@
 require = require("esm")(module/*, options*/)
 
 const { fetchBets, myBets, acceptedBets, unacceptedBets, roundBets, potBets, revealedBets, unrevealedBets,
-  refreshBet, hashSecret } = require('../src/helpers/bets')
+  refreshBet, hashSecret, validBet, xorBets } = require('../src/helpers/bets');
 const { getAssetAmount } = require('../src/helpers/eos')
-const { validBet, xorBets, getCards } = require('../src/helpers/players')
+const { getCards } = require('../src/helpers/players')
 const { getWinningCard } = require('../src/games/hi-low')
 
 const bets = [ { key: 0,
@@ -81,13 +81,14 @@ const bets = [ { key: 0,
 
 
 // Validate each secret against the hash
-for (let bet of bets) {
+bets.filter((bet) => {
   if (!validBet(bet)) {
     console.log("LIAR FOUND! Bet:", bet)
     // TODO: Pay 0
     // TODO Update player stats
   }
-}
+  return validBet(bet)
+})
 
 // Find the card for each player...
 const cards = getCards(bets)

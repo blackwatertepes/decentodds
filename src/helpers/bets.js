@@ -1,6 +1,6 @@
 const ecc = require('eosjs-ecc')
 const { getbets } = require('./actions')
-const { getRandom } = require('./random')
+const { getRandom, xor } = require('./random')
 
 async function fetchBets() {
   const bets = await getbets();
@@ -54,8 +54,21 @@ async function refreshBet(_bet) {
   });
 }
 
+// NOTE: Hashes the secret with the players name...
 function hashSecret(secret, playerName) {
   return ecc.sha256(`${secret}:${playerName}`);
+}
+
+// NOTE: Make sure the revealed secret matches the bet hash...
+// TODO: Test
+function validBet(bet) {
+  return bet.hash == hashSecret(bet.secret, bet.better)
+}
+
+// NOTE: xor's the secets together...
+// TODO: Test
+function xorBets(bets) {
+  return xor(bets.map((bet) => { return bet.secret }))
 }
 
 module.exports = {
@@ -66,7 +79,9 @@ module.exports = {
   potBets,
   revealedBets,
   refreshBet,
-  hashSecret,
   unacceptedBets,
   unrevealedBets,
+  hashSecret,
+  validBet,
+  xorBets,
 }
