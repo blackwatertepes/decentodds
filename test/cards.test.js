@@ -4,21 +4,21 @@ const { cardFactory } = require('./factories');
 describe('cards', function() {
   describe('getCardAtPos', function() {
     it('returns the correct card', () => {
-      expect(getCardAtPos(0)).toEqual({ num: 1, rank: 14, suit: 'spade', values: [1,11] });
-      expect(getCardAtPos(13)).toEqual({ num: 1, rank: 14, suit: 'heart', values: [1,11] });
-      expect(getCardAtPos(26)).toEqual({ num: 1, rank: 14, suit: 'club', values: [1,11] });
-      expect(getCardAtPos(39)).toEqual({ num: 1, rank: 14, suit: 'diamond', values: [1,11] });
+      expect(getCardAtPos(0)).toEqual({ rank: 14, suit: 'spade' });
+      expect(getCardAtPos(13)).toEqual({ rank: 14, suit: 'heart' });
+      expect(getCardAtPos(26)).toEqual({ rank: 14, suit: 'club' });
+      expect(getCardAtPos(39)).toEqual({ rank: 14, suit: 'diamond' });
     });
 
     it('returns the correct val', () => {
-      expect(getCardAtPos(0)).toEqual({ num: 1, rank: 14, suit: 'spade', values: [1,11] });
-      expect(getCardAtPos(10)).toEqual({ num: 11, rank: 11, suit: 'spade', values: [10] });
-      expect(getCardAtPos(12)).toEqual({ num: 13, rank: 13, suit: 'spade', values: [10] });
+      expect(getCardAtPos(0)).toEqual({ rank: 14, suit: 'spade' });
+      expect(getCardAtPos(10)).toEqual({ rank: 11, suit: 'spade' });
+      expect(getCardAtPos(12)).toEqual({ rank: 13, suit: 'spade' });
     });
 
     it('returns correct card for large values', () => {
-      expect(getCardAtPos(52**8)).toEqual({ num: 1, rank: 14, suit: 'spade', values: [1,11] });
-      expect(getCardAtPos(52**9)).toEqual({ num: 1, rank: 14, suit: 'spade', values: [1,11] });
+      expect(getCardAtPos(52**8)).toEqual({ rank: 14, suit: 'spade' });
+      expect(getCardAtPos(52**9)).toEqual({ rank: 14, suit: 'spade' });
     });
   });
 
@@ -31,15 +31,15 @@ describe('cards', function() {
 
   describe('getCardForPlayer', () => {
     it('returns', () => {
-      expect(getCardForPlayer(123, 0)).toEqual({ num: 7, rank: 7, suit: 'heart', values: [7] });
-      expect(getCardForPlayer(123, 1)).toEqual({ num: 3, rank: 3, suit: 'spade', values: [3] });
+      expect(getCardForPlayer(123, 0)).toEqual({ rank: 7, suit: 'heart' });
+      expect(getCardForPlayer(123, 1)).toEqual({ rank: 3, suit: 'spade' });
     });
   });
 
   describe('getCardIndex', () => {
-    let two = cardFactory({ num: 2, values:[2], rank: 2 });
-    let four = cardFactory({ num: 4, values:[4], rank: 4 });
-    let six = cardFactory({ num: 6, values:[6], rank: 6 });
+    let two = cardFactory({ rank: 2 });
+    let four = cardFactory({ rank: 4 });
+    let six = cardFactory({ rank: 6 });
     let cards = [two, four, six];
 
     it('returns', () => {
