@@ -2,98 +2,53 @@ require = require("esm")(module/*, options*/)
 
 const { fetchBets, myBets, acceptedBets, unacceptedBets, roundBets, potBets, revealedBets, unrevealedBets,
   refreshBet, hashSecret, validBet, xorBets } = require('../src/helpers/bets');
+const { paybet } = require('../src/helpers/actions');
 const { getAssetAmount } = require('../src/helpers/eos')
 const { getCards } = require('../src/helpers/players')
-const { getWinningCard } = require('../src/games/hi-low')
+const { getWinningCard } = require('../src/games/hi-low');
+const { getCardForPlayer } = require('../src/helpers/cards');
+const { xor } = require('../src/helpers/random');
 
-const bets = [ { key: 0,
-    hash:
-     'edbb95d34d8268b70bf297524dbe7e9e0f61eb116a9375de4ed2619e24dc305d',
-    better: 'decentoddsaa',
-    gamekey: 0,
-    round: 2,
-    wager: '1.000 EOS',
-    deposit: '0.0000 EOS',
-    accepted: 1,
-    requestedPayout: '0 ',
-    secret: '234730090579321',
-    createdAt: '1549866300500000' },
-  { key: 1,
-    hash:
-     '61664d4979c9c5336b5c13ffd3aa9bfee566afafc55c56b26d626a6ebbc8e37b',
-    better: 'decentoddsab',
-    gamekey: 0,
-    round: 2,
-    wager: '1 EOS',
-    deposit: '0.0000 EOS',
-    accepted: 1,
-    requestedPayout: '0 ',
-    secret: '1465883754658619',
-    createdAt: '1549866302500000' },
-  { key: 2,
-    hash:
-     '61664d4979c9c5336b5c13ffd3aa9bfee566afafc55c56b26d626a6ebbc8e37b',
-    better: 'decentoddsab',
-    gamekey: 0,
-    round: 2,
-    wager: '1 EOS',
-    deposit: '0.0000 EOS',
-    accepted: 1,
-    requestedPayout: '0 ',
-    secret: '1465883754658619',
-    createdAt: '1549866302500000' },
-  { key: 3,
-    hash:
-     '61664d4979c9c5336b5c13ffd3aa9bfee566afafc55c56b26d626a6ebbc8e37b',
-    better: 'decentoddsab',
-    gamekey: 0,
-    round: 2,
-    wager: '1 EOS',
-    deposit: '0.0000 EOS',
-    accepted: 1,
-    requestedPayout: '0 ',
-    secret: '1465883754658619',
-    createdAt: '1549866302500000' },
-  { key: 4,
-    hash:
-     '61664d4979c9c5336b5c13ffd3aa9bfee566afafc55c56b26d626a6ebbc8e37b',
-    better: 'decentoddsab',
-    gamekey: 0,
-    round: 2,
-    wager: '1 EOS',
-    deposit: '0.0000 EOS',
-    accepted: 1,
-    requestedPayout: '0 ',
-    secret: '1465883754658619',
-    createdAt: '1549866302500000' },
-  { key: 5,
-    hash:
-     '61664d4979c9c5336b5c13ffd3aa9bfee566afafc55c56b26d626a6ebbc8e37b',
-    better: 'decentoddsab',
-    gamekey: 0,
-    round: 2,
-    wager: '1 EOS',
-    deposit: '0.0000 EOS',
-    accepted: 1,
-    requestedPayout: '0 ',
-    secret: '1465883754658619',
-    createdAt: '1549866302500000' } ];
+function objectsEqual(obj_a, obj_b) {
+  return Object.values(obj_a).sort().join('') == Object.values(obj_b).sort().join('')
+}
 
+(async () => {
+  const bets = await fetchBets();
+  const revealedbets = revealedBets(acceptedBets(bets));
 
-// Validate each secret against the hash
-bets.filter((bet) => {
-  if (!validBet(bet)) {
-    console.log("LIAR FOUND! Bet:", bet)
-    // TODO: Pay 0
-    // TODO Update player stats
+  // Validate each secret against the hash
+  const validbets = revealedbets.filter((bet) => {
+    if (!validBet(bet)) {
+      console.log("LIAR FOUND! Bet:", bet)
+      paybet(bet.key, 0);
+      // TODO Update player stats
+    }
+    return validBet(bet)
+  })
+
+  // Find the card for each player...
+  const cards = getCards(validbets)
+  console.log(cards);
+  const winningCard = getWinningCard(cards)
+  console.log("Winner Card:", winningCard)
+
+  // TODO: Account for ties
+  // Pay the winner
+  let rand = Math.abs(xorBets(validbets))
+  console.log("rand:", rand, "validbets:", validbets);
+  const potAmount = validbets.reduce((acc, bet) => { console.log("acc:", acc, "bet:", bet); return getAssetAmount(bet.wager) + getAssetAmount(acc.wager) })
+  console.log("potAmount:", potAmount);
+  let idx = 0;
+  for (let bet of validbets) {
+    const card = getCardForPlayer(rand, idx)
+    if (objectsEqual(card, winningCard)) {
+      const amount = `${potAmount} EOS`;
+      console.log("Pot:", potAmount, amount);
+      paybet(bet.key, amount);
+    } else {
+      paybet(bet.key, 0);
+    }
+    idx++;
   }
-  return validBet(bet)
-})
-
-// Find the card for each player...
-const cards = getCards(bets)
-console.log(cards);
-const winningCard = getWinningCard(cards)
-console.log("Winner Card:", winningCard)
-
-// TODO: Pay the winner
+})();
