@@ -12,7 +12,7 @@ const GAMEKEY = 0
 
 const secrets = {} // TODO: Save sercets to disk
 
-export function runBetter() {
+export function runBetter(interval = 2000) {
   setInterval(async () => {
     //console.log("Better thining...");
     let bets = await fetchBets();
@@ -49,10 +49,7 @@ export function runBetter() {
       console.log("Better: Secret revealed:", secret);
     }
 
+    // TODO:
     // Show game outcome...
-    const cards = getCards(bets)
-    console.log(cards);
-    const winningCard = getWinningCard(cards)
-    console.log("Winner Card:", winningCard)
-  }, 2000)
+  }, interval)
 }

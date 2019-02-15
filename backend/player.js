@@ -18,13 +18,13 @@ function findSecret(bet) {
   })
 }
 
-export function runPlayer() {
+export function runPlayer(interval = 4000) {
   setInterval(async () => {
     //console.log(`Player ${PLAYER_NAME} thinking...`);
     let bets = await fetchBets();
     let mybets = myBets(bets, PLAYER_NAME);
     let myacceptedbets = unrevealedBets(acceptedBets(mybets));
-    //let myrevealedbets = revealedBets(mybets);
+    let myrevealedbets = revealedBets(acceptedBets(mybets));
 
     // Place a bet...
     if (!mybets.length > 0) {
@@ -45,9 +45,12 @@ export function runPlayer() {
     }
 
     // Show game outcome...
-    const cards = getCards(bets)
-    console.log(cards);
-    const winningCard = getWinningCard(cards)
-    console.log("Winner Card:", winningCard)
-  }, 8000)
+    for (let bet of myrevealedbets) {
+      const potbets = potBets(bets, bet.round)
+      const cards = getCards(potbets)
+      console.log(cards);
+      const winningCard = getWinningCard(cards)
+      console.log("Winner Card:", winningCard)
+    }
+  }, interval)
 }

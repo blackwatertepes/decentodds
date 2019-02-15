@@ -1,11 +1,9 @@
-const dotenv = require('dotenv').config()
 const { getAssetAmount } = require('../src/helpers/eos')
 const { fetchBets, myBets, acceptedBets, unacceptedBets, roundBets, potBets, revealedBets, unrevealedBets,
   refreshBet } = require('../src/helpers/bets');
 const { acceptbet, advanceround } = require('../src/helpers/actions');
 const { fetchGames } = require('../src/helpers/games');
 
-const { CONTRACT_OWNER } = process.env
 const GAMEKEY = 0
 
 function findGame(games) {
@@ -14,7 +12,7 @@ function findGame(games) {
   })
 }
 
-export function runApprover() {
+export function runApprover(interval = 1000) {
   setInterval(async () => {
     //console.log("Admin thinking...");
     const games = await fetchGames();
@@ -36,5 +34,5 @@ export function runApprover() {
       await advanceround(game.key);
       console.log("Round advanced");
     }
-  }, 500)
+  }, interval)
 }
