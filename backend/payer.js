@@ -55,7 +55,7 @@ export function runPayer(interval = 1000) {
           if (validbets.length == 1) {
             potAmount = getAssetAmount(validbets[0].wager);
           } else {
-            potAmount = validbets.reduce((acc, bet) => { console.log("acc:", acc, "bet:", bet); return getAssetAmount(bet.wager) + getAssetAmount(acc.wager) })
+            potAmount = validbets.reduce((acc, bet) => { return getAssetAmount(bet.wager) + getAssetAmount(acc.wager) })
           }
           console.log("potAmount:", potAmount);
           let idx = 0;

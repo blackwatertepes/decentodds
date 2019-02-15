@@ -217,6 +217,7 @@ void decentodds::paybet(uint64_t key, asset amount) {
         print("No bet found!");
         return; // No Bet Found!
     } else {
+        // TODO: Don't erase, and just update
         _bets.erase(itr);
     }
 
