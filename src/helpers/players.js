@@ -1,4 +1,5 @@
 const { getCardForPlayer } = require('./cards')
+const { getAssetAmount } = require('./eos')
 const { xorBets } = require('./bets')
 
 // INFO: Sharable methods for the outcome of games
@@ -11,6 +12,16 @@ function getCards(bets) {
   return bets.map((bet, idx) => { return getCardForPlayer(rand, idx) })
 }
 
+// TODO: Test
+function getPotAmount(bets) {
+  if (validbets.length == 1) {
+    return getAssetAmount(validbets[0].wager);
+  } else {
+    return validbets.reduce((acc, bet) => { return getAssetAmount(bet.wager) + getAssetAmount(acc.wager) })
+  }
+}
+
 module.exports = {
-  getCards
+  getCards,
+  getPotAmount
 }

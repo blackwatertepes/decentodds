@@ -12,44 +12,48 @@ const GAMEKEY = 0
 
 const secrets = {} // TODO: Save sercets to disk
 
+async function revealBets(mybets, secrets) {
+  let myacceptedbets = unrevealedBets(acceptedBets(mybets));
+  for (let bet of myacceptedbets) {
+    const secret = secrets[bet.round];
+    console.log("Better: Revealing secret...");
+    await reveal(PLAYER_NAME, bet.key, secret);
+    console.log("Better: Secret revealed:", secret);
+  }
+}
+
+async function placeBets(bets, secrets) {
+  let openbets = unacceptedBets(bets);
+
+  for (let bet of openbets) {
+    const { accepted, better, key, wager } = bet
+    const wageredAmount = getAssetAmount(wager)
+    const roundbets = roundBets(bets, bet.round);
+    if (wageredAmount > 0 // Not worth our time
+      && wageredAmount < 10 // Too risky
+      && roundbets.length == 1 // No one else has bet in this round
+      && !secrets[bet.round]) { // I have not yet bet in this round
+        // TODO: Make sure the round is still active, on the game object
+      //console.log("Open Bet:", bet)
+      const secret = getRandom();
+      secrets[bet.round] = secret;
+      const hash = hashSecret(secret, PLAYER_NAME);
+      console.log("Better: Placing bet...");
+      await placebet(PLAYER_NAME, hash, GAMEKEY, wageredAmount);
+      console.log("Better: Bet placed.");
+    }
+  }
+}
+
 export function runBetter(interval = 2000) {
   setInterval(async () => {
     //console.log("Better thining...");
     let bets = await fetchBets();
-    let openbets = unacceptedBets(bets);
     let mybets = myBets(bets, PLAYER_NAME);
-    let myacceptedbets = unrevealedBets(acceptedBets(mybets));
-    let myrevealedbets = revealedBets(mybets);
 
-    // Check for open bets...
-    for (let bet of openbets) {
-      const { accepted, better, key, wager } = bet
-      const wageredAmount = getAssetAmount(wager)
-      const roundbets = roundBets(bets, bet.round);
-      if (wageredAmount > 0 // Not worth our time
-        && wageredAmount < 10 // Too risky
-        && roundbets.length == 1 // No one else has bet in this round
-        && !secrets[bet.round]) { // I have not yet bet in this round
-          // TODO: Make sure the round is still active, on the game object
-        //console.log("Open Bet:", bet)
-        const secret = getRandom();
-        secrets[bet.round] = secret;
-        const hash = hashSecret(secret, PLAYER_NAME);
-        console.log("Better: Placing bet...");
-        await placebet(PLAYER_NAME, hash, GAMEKEY, wageredAmount);
-        console.log("Better: Bet placed.");
-      }
-    }
+    placeBets(bets, secrets);
+    revealBets(mybets);
 
-    // Reveal a bet...
-    for (let bet of myacceptedbets) {
-      const secret = secrets[bet.round];
-      console.log("Better: Revealing secret...");
-      await reveal(PLAYER_NAME, bet.key, secret);
-      console.log("Better: Secret revealed:", secret);
-    }
-
-    // TODO:
-    // Show game outcome...
+    // TODO: Show game outcome...
   }, interval)
 }

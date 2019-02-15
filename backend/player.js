@@ -18,39 +18,46 @@ function findSecret(bet) {
   })
 }
 
+async function placeBet(mybets, secrets) {
+  if (!mybets.length > 0) {
+    const secret = getRandom();
+    secrets.unshift(secret); // Add to beginning
+    const hash = hashSecret(secret, PLAYER_NAME);
+    console.log("Player: Placing bet...");
+    await placebet(PLAYER_NAME, hash, GAMEKEY, WAGER);
+    console.log("Player: Bet placed.");
+  }
+}
+
+async function revealBet(mybets) {
+  const myacceptedbets = unrevealedBets(acceptedBets(mybets));
+  for (let bet of myacceptedbets) {
+    const secret = findSecret(bet);
+    console.log("Player: Revealing secret...");
+    await reveal(PLAYER_NAME, bet.key, secret);
+    console.log("Player: Secret revealed:", secret);
+  }
+)
+
+async function showOutcome(mybets) {
+  const myrevealedbets = revealedBets(acceptedBets(mybets));
+  for (let bet of myrevealedbets) {
+    const potbets = potBets(bets, bet.round)
+    const cards = getCards(potbets)
+    console.log(cards);
+    const winningCard = getWinningCard(cards)
+    console.log("Winner Card:", winningCard)
+  }
+}
+
 export function runPlayer(interval = 4000) {
   setInterval(async () => {
     //console.log(`Player ${PLAYER_NAME} thinking...`);
     let bets = await fetchBets();
     let mybets = myBets(bets, PLAYER_NAME);
-    let myacceptedbets = unrevealedBets(acceptedBets(mybets));
-    let myrevealedbets = revealedBets(acceptedBets(mybets));
 
-    // Place a bet...
-    if (!mybets.length > 0) {
-      const secret = getRandom();
-      secrets.unshift(secret); // Add to beginning
-      const hash = hashSecret(secret, PLAYER_NAME);
-      console.log("Player: Placing bet...");
-      await placebet(PLAYER_NAME, hash, GAMEKEY, WAGER);
-      console.log("Player: Bet placed.");
-    }
-
-    // Reveal a bet...
-    for (let bet of myacceptedbets) {
-      const secret = findSecret(bet);
-      console.log("Player: Revealing secret...");
-      await reveal(PLAYER_NAME, bet.key, secret);
-      console.log("Player: Secret revealed:", secret);
-    }
-
-    // Show game outcome...
-    for (let bet of myrevealedbets) {
-      const potbets = potBets(bets, bet.round)
-      const cards = getCards(potbets)
-      console.log(cards);
-      const winningCard = getWinningCard(cards)
-      console.log("Winner Card:", winningCard)
-    }
+    placeBet(mybets, secrets);
+    revealBet(mybets);
+    showOutcome(mybets);
   }, interval)
 }
