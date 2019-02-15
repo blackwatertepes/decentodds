@@ -65,7 +65,6 @@ function validBet(bet) {
 }
 
 // NOTE: xor's the secets together...
-// TODO: Test
 function xorBets(bets) {
   return xor(bets.map((bet) => { return bet.secret }))
 }

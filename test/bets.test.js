@@ -10,6 +10,7 @@ const {
   unrevealedBets,
   hashSecret,
   validBet,
+  xorBets,
  } = require('../src/helpers/bets');
 
 describe('bets', function() {
@@ -96,6 +97,13 @@ describe('bets', function() {
       it('returns true when the bet is valid', function() {
         expect(validBet(bet)).toEqual(false);
       });
+    });
+  });
+
+  describe('xorBets', function() {
+    it('returns the correct xor', () => {
+      const bets = [betFactory({ secret: 111 }), betFactory({ secret: 222 }), betFactory({ secret: 333 })];
+      expect(xorBets(bets)).toEqual(333 ^ 222 ^ 111);
     });
   });
 });
