@@ -60,7 +60,6 @@ function hashSecret(secret, playerName) {
 }
 
 // NOTE: Make sure the revealed secret matches the bet hash...
-// TODO: Test
 function validBet(bet) {
   return bet.hash == hashSecret(bet.secret, bet.better)
 }

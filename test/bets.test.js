@@ -9,6 +9,7 @@ const {
   revealedBets,
   unrevealedBets,
   hashSecret,
+  validBet,
  } = require('../src/helpers/bets');
 
 describe('bets', function() {
@@ -71,6 +72,30 @@ describe('bets', function() {
       const num = 123;
       const name = 'PLAYER';
       expect(hashSecret(num, name)).toEqual(ecc.sha256(`${num}:${name}`));
+    });
+  });
+
+  describe('validBet', function() {
+    describe('when the bet is valid', function() {
+      const secret = Math.random();
+      const name = 'PLAYER';
+      const hash = hashSecret(secret, name);
+      const bet = betFactory({ secret, hash, better: name });
+
+      it('returns true when the bet is valid', function() {
+        expect(validBet(bet)).toEqual(true);
+      });
+    });
+
+    describe('when the bet is NOT valid', function() {
+      const secret = Math.random();
+      const name = 'PLAYER';
+      const hash = hashSecret(secret, name);
+      const bet = betFactory({ secret: Math.random(), hash, better: name });
+
+      it('returns true when the bet is valid', function() {
+        expect(validBet(bet)).toEqual(false);
+      });
     });
   });
 });
