@@ -32,6 +32,7 @@ async function placeBet(mybets, secrets) {
 async function revealBet(mybets) {
   const myacceptedbets = unrevealedBets(acceptedBets(mybets));
   for (let bet of myacceptedbets) {
+    // TODO: Make sure the round has advanced
     const secret = findSecret(bet);
     console.log("Player: Revealing secret...");
     await reveal(PLAYER_NAME, bet.key, secret);

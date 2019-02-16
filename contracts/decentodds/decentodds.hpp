@@ -28,6 +28,7 @@ public:
     [[eosio::action]] void askpayout(uint64_t key, asset payout); // TODO: Finish, once we have true p2p
     // NOTE: Admin methods...
     [[eosio::action]] void paybet(uint64_t key, asset amount); // NOTE: Needed, until we have true p2p
+    [[eosio::action]] void deletebet(uint64_t key); // NOTE: Allows the bet to remain, after being paid, so users can examine the game results
     [[eosio::action]] void blowupgame(uint64_t key); // Fix unresolved games, by collecting all outstanding bets, and erasing the game...
 
     //private: -- not private so the cleos get table call can see the table data.
@@ -57,6 +58,7 @@ public:
         uint32_t      round;
         asset         wager;
         asset         deposit;
+        asset         paid;
         bool          accepted;
         asset         requestedPayout;
         uint64_t      secret;
@@ -70,6 +72,7 @@ public:
     //indexed_by<"better"_n, const_mem_fun<bets, name, &bets::by_better>>,
     //indexed_by<"gamehash"_n, const_mem_fun<bets, uint64_t, &bets::by_gamehash>>> betstable;
 
+    // TODO...
     // NOTE: For leaderboards, history, trust, etc...
     struct [[eosio::table]] players
     {

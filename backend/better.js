@@ -15,6 +15,7 @@ const secrets = {} // TODO: Save sercets to disk
 async function revealBets(mybets, secrets) {
   let myacceptedbets = unrevealedBets(acceptedBets(mybets));
   for (let bet of myacceptedbets) {
+    // TODO: Make sure the round has advanced
     const secret = secrets[bet.round];
     console.log("Better: Revealing secret...");
     await reveal(PLAYER_NAME, bet.key, secret);

@@ -92,6 +92,7 @@ void decentodds::bet(checksum256 hash, uint64_t gamekey, name better, asset wage
                 p.better = better;
                 p.wager = wager;
                 p.deposit = deposit;
+                //p.paid; //asset(0, S(4, EOS));
                 p.accepted = 0;
                 //p.requestedPayout = 0;
                 //p.secret;
@@ -107,7 +108,7 @@ void decentodds::unbet(uint64_t key) {
             // NOTE: Only the better can unbet
             require_auth(item.better);
 
-            // NOTE: Accepted bets can be unbet
+            // NOTE: Accepted bets can not be unbet
             if (item.accepted == 1) {
               print("Bet has already been accepted!");
               return;
@@ -213,15 +214,33 @@ void decentodds::paybet(uint64_t key, asset amount) {
     require_auth(_self);
 
     auto itr = _bets.find(key);
-    if (itr == _bets.end()) {
-        print("No bet found!");
-        return; // No Bet Found!
-    } else {
-        // TODO: Don't erase, and just update
-        _bets.erase(itr);
+    if (itr != _bets.end()) {
+        _bets.modify(itr, get_self(), [&](auto& p) {
+            p.paid = amount;
+        });
     }
 
     // TODO: Transfer funds for wager & deposit
+}
+
+void decentodds::deletebet(uint64_t key) {
+    for(auto& item : _bets) {
+        if (item.key == key) {
+            // NOTE: Only the better can delete
+            require_auth(item.better);
+        }
+
+        // NOTE: Unpaid bets can not be deleted
+        if (!item.paid.is_valid()) {
+          print("Bet has not yet been paid!");
+          return;
+        }
+    }
+
+    auto itr = _bets.find(key);
+    if (itr != _bets.end()) {
+        _bets.erase(itr);
+    }
 }
 
 void decentodds::blowupgame(uint64_t key) {
@@ -238,4 +257,4 @@ void decentodds::blowupgame(uint64_t key) {
     // TODO: Delete all bets associated with game
 };
 
-EOSIO_DISPATCH( decentodds, (version)(creategame)(advanceround)(deletegame)(acceptbet)(bet)(unbet)(reveal)(askpayout)(paybet)(blowupgame))
+EOSIO_DISPATCH( decentodds, (version)(creategame)(advanceround)(deletegame)(acceptbet)(bet)(unbet)(reveal)(askpayout)(paybet)(deletebet)(blowupgame))

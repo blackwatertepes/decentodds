@@ -1,5 +1,5 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Sat Feb  9 00:01:33 2019",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Fri Feb 15 23:10:02 2019",
     "version": "eosio::abi/1.1",
     "structs": [
         {
@@ -95,6 +95,10 @@
                     "type": "asset"
                 },
                 {
+                    "name": "paid",
+                    "type": "asset"
+                },
+                {
                     "name": "accepted",
                     "type": "bool"
                 },
@@ -133,6 +137,16 @@
                 {
                     "name": "hash",
                     "type": "checksum256"
+                }
+            ]
+        },
+        {
+            "name": "deletebet",
+            "base": "",
+            "fields": [
+                {
+                    "name": "key",
+                    "type": "uint64"
                 }
             ]
         },
@@ -268,6 +282,11 @@
         {
             "name": "creategame",
             "type": "creategame",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "deletebet",
+            "type": "deletebet",
             "ricardian_contract": ""
         },
         {
