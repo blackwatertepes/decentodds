@@ -20,6 +20,7 @@ async function revealBets(mybets, secrets) {
     console.log("Better: Revealing secret...");
     await reveal(PLAYER_NAME, bet.key, secret);
     console.log("Better: Secret revealed:", secret);
+    // TODO: Delete bet
   }
 }
 

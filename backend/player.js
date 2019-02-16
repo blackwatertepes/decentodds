@@ -48,6 +48,7 @@ async function showOutcome(mybets) {
     console.log(cards);
     const winningCard = getWinningCard(cards)
     console.log("Winner Card:", winningCard)
+    // TODO: Delete bet
   }
 }
 
