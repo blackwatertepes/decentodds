@@ -1,6 +1,6 @@
 function getRandom() {
   // INFO: The maximum number of cards that can be drawn randomly from MAX_SAFE_INTEGER is 8 (ie, 52**8)
-  // TODO: Account for xor'ing number into a number larger than MAX_SAFE_INTEGER
+  // TODO: Use BigNumber to generate xor'd rands larger than 2*32
   const min = 52**8
   const max = 52**9
   const range = max - min
