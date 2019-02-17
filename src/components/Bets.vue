@@ -39,6 +39,9 @@
       },
       paybet(key) {
         this.$store.dispatch('paybet', key)
+      },
+      deletebet(key) {
+        this.$store.dispatch('deletebet', key)
       }
     }
   }

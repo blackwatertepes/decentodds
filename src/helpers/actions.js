@@ -102,6 +102,13 @@ function reveal(actor, key, secret) {
   return api.transact({ actions: [action] }, buildOptions());
 }
 
+function deletebet(actor, key) {
+  const action = buildAction('deletebet', { actor, permission: 'active'}, {
+    key,
+  });
+  return api.transact({ actions: [action] }, buildOptions());
+}
+
 module.exports = {
   creategame,
   getgames,
@@ -112,5 +119,6 @@ module.exports = {
   acceptbet,
   reveal,
   paybet,
-  unbet
+  unbet,
+  deletebet
 }

@@ -1,4 +1,4 @@
-const { fetchBets, myBets, acceptedBets, unacceptedBets, roundBets, potBets, revealedBets, unrevealedBets,
+const { fetchBets, myBets, acceptedBets, unacceptedBets, roundBets, potBets, revealedBets, unrevealedBets, paidBets, unpaidBets,
   refreshBet, hashSecret, validBet, xorBets } = require('../src/helpers/bets');
 const { paybet } = require('../src/helpers/actions');
 const { getCards, getPotAmount } = require('../src/helpers/players')
@@ -51,9 +51,8 @@ async function payBets(validbets) {
     for (let bet of validbets) {
       const card = getCardForPlayer(rand, idx)
       if (objectsEqual(card, winningCard)) {
-        const amount = `${potAmount} EOS`;
-        console.log("Paying Pot:", amount, "to:", bet.key);
-        await paybet(bet.key, amount);
+        console.log("Paying Pot:", potAmount, "EOS to:", bet.key);
+        await paybet(bet.key, potAmount);
       } else {
         //console.log("Paying 0: to:", bet.key);
         await paybet(bet.key, 0);
@@ -71,7 +70,7 @@ export function runPayer(interval = 1000) {
 
     for (let round in pots) {
       const potbets = pots[round]
-      const revealedbets = revealedBets(potbets);
+      const revealedbets = unpaidBets(revealedBets(potbets));
       if (revealedbets.length == potbets.length) {
         console.log("All bets revealed in pot:", round);
 

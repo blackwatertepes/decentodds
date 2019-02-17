@@ -15,8 +15,14 @@ function getAssetAmount(asset) {
   return parseFloat(asset.split(' ')[0])
 }
 
+// TODO: Test
+function getAssetSymbol(asset) {
+  return asset.split(' ')[1]
+}
+
 module.exports = {
   api,
   getAssetAmount,
+  getAssetSymbol,
   rpc,
 };

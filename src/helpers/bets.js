@@ -1,5 +1,6 @@
 const ecc = require('eosjs-ecc')
 const { getbets } = require('./actions')
+const { getAssetSymbol } = require('./eos')
 const { getRandom, xor } = require('./random')
 
 async function fetchBets() {
@@ -47,6 +48,20 @@ function unrevealedBets(bets) {
   })
 }
 
+// TODO: Test
+function paidBets(bets) {
+  return bets.filter((bet) => {
+    return getAssetSymbol(bet.paid);
+  })
+}
+
+// TODO: Test
+function unpaidBets(bets) {
+  return bets.filter((bet) => {
+    return !getAssetSymbol(bet.paid);
+  })
+}
+
 async function refreshBet(_bet) {
   const bets = await fetchBets();
   return bets.find((bet) => {
@@ -79,6 +94,8 @@ module.exports = {
   refreshBet,
   unacceptedBets,
   unrevealedBets,
+  paidBets,
+  unpaidBets,
   hashSecret,
   validBet,
   xorBets,

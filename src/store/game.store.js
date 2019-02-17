@@ -105,5 +105,10 @@ export default {
         amount: '1 EOS'
       }})
     },
+    deletebet({ dispatch }, key) {
+      dispatch('transact', { name: 'deletebet', data: {
+        key
+      }})
+    }
   }
 }

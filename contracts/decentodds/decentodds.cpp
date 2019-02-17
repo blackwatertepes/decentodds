@@ -231,10 +231,10 @@ void decentodds::deletebet(uint64_t key) {
         }
 
         // NOTE: Unpaid bets can not be deleted
-        if (!item.paid.is_valid()) {
-          print("Bet has not yet been paid!");
-          return;
-        }
+        // if (!item.paid.is_valid()) {
+        //   print("Bet has not yet been paid!");
+        //   return;
+        // }
     }
 
     auto itr = _bets.find(key);
