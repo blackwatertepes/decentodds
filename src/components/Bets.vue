@@ -9,6 +9,7 @@
         <button @click="acceptbet(bet.key)">Accept</button>
         <button @click="reveal(bet.key)">Reveal</button>
         <button @click="askpayout(bet.key)">Ask</button>
+        <button @click="deletebet(bet.key)">Delete</button>
       </li>
     </ul>
   </div>

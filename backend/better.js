@@ -1,9 +1,9 @@
 const dotenv = require('dotenv').config()
 const { getAssetAmount } = require('../src/helpers/eos')
 const { getRandom } = require('../src/helpers/random');
-const { fetchBets, myBets, acceptedBets, unacceptedBets, roundBets, potBets, revealedBets, unrevealedBets,
+const { fetchBets, myBets, acceptedBets, unacceptedBets, roundBets, potBets, revealedBets, unrevealedBets, paidBets, unpaidBets,
   refreshBet, hashSecret, validBet, xorBets } = require('../src/helpers/bets');
-const { bet:placebet, reveal } = require('../src/helpers/actions');
+const { bet:placebet, reveal, deletebet } = require('../src/helpers/actions');
 const { getCards } = require('../src/helpers/players')
 const { getWinningCard } = require('../src/games/hi-low')
 
@@ -47,6 +47,17 @@ async function placeBets(bets, secrets) {
   }
 }
 
+async function deleteBets(mybets) {
+  let paidbets = paidBets(mybets);
+
+  for (let bet of paidbets) {
+    console.log("Better: Deleting bet...");
+    await deletebet(PLAYER_NAME, bet.key);
+    console.log("Better: Deleted bet.");
+  }
+
+}
+
 export function runBetter(interval = 2000) {
   setInterval(async () => {
     //console.log("Better thining...");
@@ -55,7 +66,6 @@ export function runBetter(interval = 2000) {
 
     placeBets(bets, secrets);
     revealBets(mybets, secrets);
-
-    // TODO: Show game outcome...
+    deleteBets(mybets);
   }, interval)
 }
