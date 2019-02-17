@@ -38,7 +38,7 @@ async function revealBet(mybets) {
     await reveal(PLAYER_NAME, bet.key, secret);
     console.log("Player: Secret revealed:", secret);
   }
-)
+}
 
 async function showOutcome(mybets) {
   const myrevealedbets = revealedBets(acceptedBets(mybets));

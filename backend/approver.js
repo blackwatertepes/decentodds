@@ -30,7 +30,7 @@ async function acceptValidBets(bets, game) {
 }
 
 export function runApprover(interval = 1000) {
-  setInterval(() => {
+  setInterval(async () => {
     //console.log("Admin thinking...");
     const games = await fetchGames();
     const game = findGame(games);

@@ -54,7 +54,7 @@ export function runBetter(interval = 2000) {
     let mybets = myBets(bets, PLAYER_NAME);
 
     placeBets(bets, secrets);
-    revealBets(mybets);
+    revealBets(mybets, secrets);
 
     // TODO: Show game outcome...
   }, interval)

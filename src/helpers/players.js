@@ -14,10 +14,10 @@ function getCards(bets) {
 
 // TODO: Test
 function getPotAmount(bets) {
-  if (validbets.length == 1) {
-    return getAssetAmount(validbets[0].wager);
+  if (bets.length == 1) {
+    return getAssetAmount(bets[0].wager);
   } else {
-    return validbets.reduce((acc, bet) => { return getAssetAmount(bet.wager) + getAssetAmount(acc.wager) })
+    return bets.reduce((acc, bet) => { return getAssetAmount(bet.wager) + getAssetAmount(acc.wager) })
   }
 }
 

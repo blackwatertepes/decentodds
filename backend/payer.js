@@ -33,7 +33,7 @@ function validateBets(potbets) {
   })
 }
 
-function payBets(validbets) {
+async function payBets(validbets) {
   if (validbets.length > 0) {
     // Find the card for each player...
     const cards = getCards(validbets)
@@ -42,7 +42,7 @@ function payBets(validbets) {
     console.log("Winner Card:", winningCard)
 
     const rand = Math.abs(xorBets(validbets))
-    const potAmount = getPotAmount(validBets);
+    const potAmount = getPotAmount(validbets);
 
     // TODO: Account for ties
     // Pay the winner

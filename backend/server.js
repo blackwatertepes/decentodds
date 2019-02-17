@@ -6,5 +6,5 @@ const { runPayer } = require('./payer');
 
 runApprover();
 runBetter();
-runPlayer();
+//runPlayer();
 runPayer();
