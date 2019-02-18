@@ -117,13 +117,13 @@ export default {
   getters: {
     cards({ bets }) {
       const mybets = myBets(bets, PLAYER_A);
-      console.log("bets:", bets, PLAYER_A, mybets);
+      // console.log("bets:", bets, PLAYER_A, mybets);
       const myrevealedbets = revealedBets(acceptedBets(mybets));
       let cards = [];
       for (let bet of myrevealedbets) {
         const potbets = potBets(bets, bet.round)
         cards = getCards(potbets)
-        console.log(cards);
+        // console.log(cards);
         const winningCard = getWinningCard(cards)
         console.log("Winner Card:", winningCard)
       }

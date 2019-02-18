@@ -14,7 +14,7 @@
         </li>
       </ul>
     </div>
-    <GameTable />
+    <GameTable v-bind:cards="cards" />
   </div>
 </template>
 

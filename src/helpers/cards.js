@@ -4,10 +4,25 @@ const SUITS = ['spade', 'heart', 'club', 'diamond']
 // NOTE: Cards only hold the suit, and rank (2's are 2, Jacks are 11, & Aces are 14)
 // Games should determine how to value cards
 export function getCardAtPos(position) {
-  const suit = SUITS[Math.floor(position % 52 / 13)]
-  const num = position % 13 + 1 // 1 - 13
-  const rank = (num == 1) ? 14 : num // 2 - 14 // TODO: Change to match external cards lib?
-  return { rank, suit } // TODO: Cards need an index
+  const suit = Math.floor(position % 52 / 13);
+  const suitName = SUITS[suit];
+  const rank = position % 13 + 1 // 1 - 13
+  let rankName = rank;
+  switch(rank) {
+    case 1:
+      rankName = 'ace'
+      break;
+    case 11:
+      rankName = 'jack'
+      break;
+    case 12:
+      rankName = 'queen'
+      break;
+    case 13:
+      rankName = 'king'
+      break;
+  }
+  return { rank, rankName, suit, suitName, position }
 }
 
 /* TODO: Use in other games (like hold'em)...

@@ -1,7 +1,10 @@
 module.exports = function(card) {
   return {
-    suit: 'spade',
-    rank: 'ace',
+    suit: 0,
+    suitName: 'spade',
+    rank: 1,
+    rankName: 'ace',
+    position: 0,
     ...card
   }
 }

@@ -4,21 +4,21 @@ const { cardFactory } = require('./factories');
 describe('cards', function() {
   describe('getCardAtPos', function() {
     it('returns the correct card', () => {
-      expect(getCardAtPos(0)).toEqual({ rank: 14, suit: 'spade' });
-      expect(getCardAtPos(13)).toEqual({ rank: 14, suit: 'heart' });
-      expect(getCardAtPos(26)).toEqual({ rank: 14, suit: 'club' });
-      expect(getCardAtPos(39)).toEqual({ rank: 14, suit: 'diamond' });
+      expect(getCardAtPos(0)).toEqual(expect.objectContaining({ rank: 1, rankName: 'ace', suit: 0, suitName: 'spade', position: 0 }));
+      expect(getCardAtPos(13)).toEqual(expect.objectContaining({ rank: 1, suit: 1, suitName: 'heart' }));
+      expect(getCardAtPos(26)).toEqual(expect.objectContaining({ rank: 1, suit: 2, suitName: 'club' }));
+      expect(getCardAtPos(39)).toEqual(expect.objectContaining({ rank: 1, suit: 3, suitName: 'diamond' }));
     });
 
     it('returns the correct val', () => {
-      expect(getCardAtPos(0)).toEqual({ rank: 14, suit: 'spade' });
-      expect(getCardAtPos(10)).toEqual({ rank: 11, suit: 'spade' });
-      expect(getCardAtPos(12)).toEqual({ rank: 13, suit: 'spade' });
+      expect(getCardAtPos(0)).toEqual(expect.objectContaining({ rank: 1, suit: 0 }));
+      expect(getCardAtPos(10)).toEqual(expect.objectContaining({ rank: 11, suit: 0 }));
+      expect(getCardAtPos(12)).toEqual(expect.objectContaining({ rank: 13, suit: 0 }));
     });
 
     it('returns correct card for large values', () => {
-      expect(getCardAtPos(52**8)).toEqual({ rank: 14, suit: 'spade' });
-      expect(getCardAtPos(52**9)).toEqual({ rank: 14, suit: 'spade' });
+      expect(getCardAtPos(52**8)).toEqual(expect.objectContaining({ rank: 1, suit: 0 }));
+      expect(getCardAtPos(52**9)).toEqual(expect.objectContaining({ rank: 1, suit: 0 }));
     });
   });
 
@@ -31,8 +31,8 @@ describe('cards', function() {
 
   describe('getCardForPlayer', () => {
     it('returns', () => {
-      expect(getCardForPlayer(123, 0)).toEqual({ rank: 7, suit: 'heart' });
-      expect(getCardForPlayer(123, 1)).toEqual({ rank: 3, suit: 'spade' });
+      expect(getCardForPlayer(123, 0)).toEqual(expect.objectContaining({ rank: 7, suit: 1 }));
+      expect(getCardForPlayer(123, 1)).toEqual(expect.objectContaining({ rank: 3, suit: 0 }));
     });
   });
 

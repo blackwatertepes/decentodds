@@ -8,6 +8,9 @@
 
   export default {
     name: 'GameTable',
+    props: {
+      cards: Array
+    },
     computed: {
     },
     mounted: function() {
@@ -21,11 +24,14 @@
 
       deck.fan()
       deck.flip()
-
-      let idx = 1;
-      for (let card of this.$store.getters.cards) {
-        deck.cards[card.rank].animateTo({ x: 200 * idx, y: 0 });
-        idx++;
+    },
+    watch: {
+      cards: function(cards) {
+        let idx = 1;
+        for (let card of cards) {
+          window.deck.cards[card.position].animateTo({ x: 200 * idx, y: 0 });
+          idx++;
+        }
       }
     }
   }
