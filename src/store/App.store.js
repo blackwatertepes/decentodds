@@ -38,6 +38,6 @@ export default {
       const api = new Api({ rpc, signatureProvider })
 
       return { api, rpc }
-    }
+    },
   }
 }

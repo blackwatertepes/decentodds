@@ -1,7 +1,7 @@
 const ecc = require('eosjs-ecc')
 const { getbets } = require('./actions')
 const { getAssetSymbol } = require('./eos')
-const { getRandom, xor } = require('./random')
+const { xor } = require('./random')
 
 async function fetchBets() {
   const bets = await getbets();

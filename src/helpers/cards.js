@@ -6,8 +6,8 @@ const SUITS = ['spade', 'heart', 'club', 'diamond']
 export function getCardAtPos(position) {
   const suit = SUITS[Math.floor(position % 52 / 13)]
   const num = position % 13 + 1 // 1 - 13
-  const rank = (num == 1) ? 14 : num // 2 - 14
-  return { rank, suit }
+  const rank = (num == 1) ? 14 : num // 2 - 14 // TODO: Change to match external cards lib?
+  return { rank, suit } // TODO: Cards need an index
 }
 
 /* TODO: Use in other games (like hold'em)...

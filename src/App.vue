@@ -2,18 +2,15 @@
   <div id="app">
     <router-link :to="{ name: 'root' }">Home</router-link>
     <router-view></router-view>
-    <GameTable></GameTable>
   </div>
 </template>
 
 <script>
   import Ipfs from '../node_modules/ipfs/dist'
-  import GameTable from './components/GameTable.vue'
 
   export default {
     name: 'app',
     components: {
-      GameTable
     },
     computed: {
       privateKey() { return this.$store.state.privateKey },

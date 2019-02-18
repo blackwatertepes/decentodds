@@ -1,8 +1,5 @@
-const dotenv = require('dotenv').config();
-const { api, rpc } = require('../../src/helpers/eos');
-const ecc = require('eosjs-ecc');
-
-const { CONTRACT_OWNER } = process.env;
+const { api, rpc } = require('./eos');
+const { CONTRACT_OWNER } = require('../../constants');
 
 /////////////
 // PRIVATE //

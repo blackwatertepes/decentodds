@@ -18,6 +18,8 @@
     computed: {
       games() { return this.$store.state.game.games }
     },
+    mounted: function() {
+    },
     methods: {
       addGame() {
         this.$store.dispatch('addGame', { creator: 'decentoddsaz', content: 'something' })

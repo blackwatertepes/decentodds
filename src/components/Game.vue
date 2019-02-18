@@ -6,15 +6,26 @@
     <br />
     <button @click="bet(game.key)">Bet</button>
     <Bets />
+    <div id="cards">
+      <h2>Cards: {{ cards.length }}</h2>
+      <ul id="cards-list">
+        <li v-for="(card, idx) in cards" :key="idx">
+          {{ card }}
+        </li>
+      </ul>
+    </div>
+    <GameTable />
   </div>
 </template>
 
 <script>
+  import GameTable from './GameTable.vue'
   import Bets from './Bets.vue'
 
   export default {
     name: 'Game',
     components: {
+      GameTable,
       Bets
     },
     computed: {
@@ -23,9 +34,13 @@
         return this.$store.state.game.games.find((game) => {
           return game.key == id
         })
+      },
+      cards () {
+        return this.$store.getters.cards;
       }
     },
     mounted: function() {
+      console.log("Game mounted!");
       //const { id } = this.$route.params
     },
     methods: {

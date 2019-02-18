@@ -1,6 +1,9 @@
 //import Room from 'ipfs-pubsub-room'
 import ecc from 'eosjs-ecc';
-import { CONTRACT_OWNER } from '../../constants';
+import { CONTRACT_OWNER, PLAYER_A } from '../../constants';
+import { myBets, acceptedBets, potBets, revealedBets } from '../helpers/bets';
+import { getCards } from '../helpers/players';
+import { getWinningCard } from '../games/hi-low';
 import { getRandom } from '../helpers/random';
 
 const REFRESH_INT_IN_SECONDS = 5;
@@ -109,6 +112,22 @@ export default {
       dispatch('transact', { name: 'deletebet', data: {
         key
       }})
+    }
+  },
+  getters: {
+    cards({ bets }) {
+      const mybets = myBets(bets, PLAYER_A);
+      console.log("bets:", bets, PLAYER_A, mybets);
+      const myrevealedbets = revealedBets(acceptedBets(mybets));
+      let cards = [];
+      for (let bet of myrevealedbets) {
+        const potbets = potBets(bets, bet.round)
+        cards = getCards(potbets)
+        console.log(cards);
+        const winningCard = getWinningCard(cards)
+        console.log("Winner Card:", winningCard)
+      }
+      return cards;
     }
   }
 }

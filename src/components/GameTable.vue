@@ -19,11 +19,14 @@
       // add to DOM
       deck.mount($container)
 
-      deck.cards[0].x = 600;
-      deck.cards[0].y = 400;
-
       deck.fan()
       deck.flip()
+
+      let idx = 1;
+      for (let card of this.$store.getters.cards) {
+        deck.cards[card.rank].animateTo({ x: 200 * idx, y: 0 });
+        idx++;
+      }
     }
   }
 </script>
@@ -32,7 +35,7 @@
 <style scoped>
   #game-table {
     position: fixed;
-    top: calc(50% + 1.5em);
+    top: calc(70% + 1.5em);
     left: 50%;
   }
 </style>
