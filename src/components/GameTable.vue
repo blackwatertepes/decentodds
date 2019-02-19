@@ -1,35 +1,36 @@
 <template>
   <div id="game-table">
+    <ul id="players-list">
+      <li v-for="(hand, idx) in hands" :key="idx">
+        <Player v-bind:cards="hand" />
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
-  import Deck from 'deck-of-cards'
+  import Player from './Player.vue'
 
   export default {
     name: 'GameTable',
+    components: {
+      Player,
+    },
     props: {
-      cards: Array
+      cards: Array,
     },
     computed: {
+      hands() {
+        return [{ rank: 1, rankName: 'ace', suit: 0, suitName: 'spade', position: 0 }]
+      }
     },
     mounted: function() {
-      let $container = document.getElementById('game-table')
-
-      // create Deck
-      let deck = window.deck = Deck()
-
-      // add to DOM
-      deck.mount($container)
-
-      deck.fan()
-      deck.flip()
     },
     watch: {
       cards: function(cards) {
         let idx = 1;
         for (let card of cards) {
-          // window.deck.cards[card.position].animateTo({ x: 200 * idx, y: 0 });
+          window.deck.cards[card.position].animateTo({ x: 200 * idx, y: 0 });
           idx++;
         }
       }

@@ -1,3 +1,4 @@
+require = require("esm")(module/*, options*/)
 const { unbet } = require('../src/helpers/actions');
 
 if (process.argv.length < 4) {
