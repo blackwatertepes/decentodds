@@ -29,7 +29,7 @@
       cards: function(cards) {
         let idx = 1;
         for (let card of cards) {
-          window.deck.cards[card.position].animateTo({ x: 200 * idx, y: 0 });
+          // window.deck.cards[card.position].animateTo({ x: 200 * idx, y: 0 });
           idx++;
         }
       }

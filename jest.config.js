@@ -3,7 +3,13 @@ module.exports = {
   cache: false,
   collectCoverageFrom: [
     'src/games/**/*.{js,jsx}',
-    'src/helpers/**/*.{js,jsx}'
+    'src/helpers/**/*.{js,jsx}',
+    'src/components/**/*.{vue}'
+  ],
+  moduleFileExtensions: [
+    "js",
+    "json",
+    "vue"
   ],
   roots: [
     '<rootDir>/src',
@@ -15,6 +21,10 @@ module.exports = {
   testMatch: [
     '<rootDir>/test/**/?(*.)(spec|test).js?(x)',
   ],
+  transform: {
+    "^.+\\.js$": "babel-jest",
+    "^.+\\.vue$": "vue-jest"
+  },
   transformIgnorePatterns: [
     '/node_modules/.*',
   ],

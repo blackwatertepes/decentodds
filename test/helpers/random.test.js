@@ -1,4 +1,4 @@
-const { getRandom, xor } = require('../src/helpers/random');
+const { getRandom, xor } = require('../../src/helpers/random');
 
 describe('random', function() {
   describe('getRandom', function() {

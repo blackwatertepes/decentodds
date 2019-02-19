@@ -1,5 +1,5 @@
-const { getCardAtPos, getCardPositionForPlayer, getCardForPlayer, getCardIndex } = require('../src/helpers/cards');
-const { cardFactory } = require('./factories');
+const { getCardAtPos, getCardPositionForPlayer, getCardForPlayer, getCardIndex } = require('../../src/helpers/cards');
+const { cardFactory } = require('../factories');
 
 describe('cards', function() {
   describe('getCardAtPos', function() {

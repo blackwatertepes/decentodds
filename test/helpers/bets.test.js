@@ -1,5 +1,5 @@
 const ecc = require('eosjs-ecc')
-const { betFactory } = require('./factories');
+const { betFactory } = require('../factories');
 const {
   myBets,
   acceptedBets,
@@ -11,7 +11,7 @@ const {
   hashSecret,
   validBet,
   xorBets,
- } = require('../src/helpers/bets');
+} = require('../../src/helpers/bets');
 
 describe('bets', function() {
   const round = 10;

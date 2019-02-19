@@ -1,6 +1,6 @@
-const { cardFactory } = require('./factories');
-const { getCardAtPos } = require('../src/helpers/cards');
-const { getWinningCard } = require('../src/games/hi-low');
+const { cardFactory } = require('../factories');
+const { getCardAtPos } = require('../../src/helpers/cards');
+const { getWinningCard } = require('../../src/games/hi-low');
 
 describe('hi-low', function() {
   describe('getWinningCard', function() {
