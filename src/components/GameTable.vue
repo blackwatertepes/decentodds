@@ -21,7 +21,10 @@
     },
     computed: {
       hands() {
-        return [{ rank: 1, rankName: 'ace', suit: 0, suitName: 'spade', position: 0 }]
+        return [
+          { rank: 1, rankName: 'ace', suit: 0, suitName: 'spade', position: 0 },
+          { rank: 11, rankName: 'jack', suit: 1, suitName: 'heart', position: 22 }
+        ]
       }
     },
     mounted: function() {

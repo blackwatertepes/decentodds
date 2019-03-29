@@ -1,6 +1,5 @@
 <template>
-  <div id="game-table">
-  </div>
+  {{ el }}
 </template>
 
 <script>
@@ -13,13 +12,14 @@
     computed: {
     },
     mounted: function() {
-      let $container = document.getElementById('game-table')
+      let $container = document.getElementsByClassName('player-table')
 
       // create Deck
       let deck = window.deck = Deck()
 
       // add to DOM
-      deck.mount($container)
+      let el = "<div></div>";
+      deck.mount(el)
 
       deck.fan()
       deck.flip()
